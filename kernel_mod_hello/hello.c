@@ -21,7 +21,7 @@ MODULE_AUTHOR("Bas Janssen");
 #define HELLO_MSG_FIFO_MAX 128
 
 #define BASE_ADDR 0x43C00000
-#define FPGA_SPACING 4
+#define FPGA_SPACING 1
 
 static struct class* hello_class = NULL;
 static struct device* hello_device = NULL;
@@ -61,6 +61,7 @@ static ssize_t hello_read(struct file* filp, char __user *buffer, size_t lenght,
 	if(PID->message_read)
 		return 0;
 	//Read from the I/O register
+	printk(KERN_INFO "Reading from address: %u\n", PID->position_address);
 	fpga_value = ioread32(PID->position_address);
 
 	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
@@ -109,6 +110,7 @@ static ssize_t hello_write(struct file* filp, const char __user *buffer, size_t 
 	if(retval)
 		return retval;
 	//Write to the I/O register
+	printk(KERN_INFO "Writing to address: %u\n", PID->setpoint_address);
 	iowrite32(converted_value, PID->setpoint_address);
 	return retval ? retval : count;
 }
@@ -164,12 +166,13 @@ static ssize_t sys_set_P(struct device* dev, struct device_attribute* attr, cons
 	int converted_value;
 	int dev_minor = MINOR(dev->devt);
 	int count = lenght;
-	
+	unsigned int * address = base_addr_pointer + FPGA_SPACING;
 	//The buffer is allready in the kernel space
 	retval = kstrtoint(buffer, 0, &converted_value);
 	if(retval)
 		return retval;
-	iowrite32(converted_value, base_addr_pointer + FPGA_SPACING);
+	printk(KERN_INFO "Writing to address: %u\n", address);
+	iowrite32(converted_value, address);
 	return retval ? retval : count;
 }
 
@@ -182,9 +185,13 @@ static ssize_t sys_read_P(struct device* dev, struct device_attribute* attr, cha
 	int i = 0;
 	int j = 0;
 	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int fpga_value = ioread32(base_addr_pointer + 3 * FPGA_SPACING);
+	int tmp;
+	unsigned int * address = base_addr_pointer + 3 * FPGA_SPACING;
+	int fpga_value;
+	printk(KERN_INFO "Reading from address: %u\n", address);
+	fpga_value = ioread32(address);
 	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
-    int tmp = fpga_value;
+    tmp = fpga_value;
     for(i = 0; i<11; i++)
     {
 		temp_char = tmp % 10;
@@ -220,11 +227,13 @@ static ssize_t sys_set_I(struct device* dev, struct device_attribute* attr, cons
  	int retval;
 	int converted_value;
 	int dev_minor = MINOR(dev->devt);
+	unsigned int * address = base_addr_pointer + 3 * FPGA_SPACING;
 	int count = lenght;
 	retval = kstrtoint(buffer, 0, &converted_value);
 	if(retval)
 		return retval;
-	iowrite32(converted_value, base_addr_pointer + FPGA_SPACING);
+	printk(KERN_INFO "Writing to address: %u\n", address);
+	iowrite32(converted_value, address);
 	return retval ? retval : count;
 }
 
@@ -237,9 +246,13 @@ static ssize_t sys_read_I(struct device* dev, struct device_attribute* attr, cha
 	int i = 0;
 	int j = 0;
 	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int fpga_value = ioread32(base_addr_pointer + FPGA_SPACING);
+	int tmp;
+	unsigned int * address = base_addr_pointer + 3 * FPGA_SPACING;
+	int fpga_value;
+	printk(KERN_INFO "Reading from address: %u\n", address);
+	fpga_value = ioread32(address);
 	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
-    int tmp = fpga_value;
+    tmp = fpga_value;
     for(i = 0; i<11; i++)
     {
 		temp_char = tmp % 10;
@@ -276,9 +289,11 @@ static ssize_t sys_set_D(struct device* dev, struct device_attribute* attr, cons
 	int converted_value;
 	int dev_minor = MINOR(dev->devt);
 	int count = lenght;
+	unsigned int * address = base_addr_pointer + FPGA_SPACING;
 	retval = kstrtoint(buffer, 0, &converted_value);
 	if(retval)
 		return retval;
+	printk(KERN_INFO "Writing to address: %u\n", address);
 	iowrite32(converted_value, base_addr_pointer + FPGA_SPACING);
 	return retval ? retval : count;
 }
@@ -292,9 +307,13 @@ static ssize_t sys_read_D(struct device* dev, struct device_attribute* attr, cha
 	int i = 0;
 	int j = 0;
 	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	int fpga_value = ioread32(base_addr_pointer + 3 * FPGA_SPACING);
+	int fpga_value;
+	int tmp;
+	unsigned int * address = base_addr_pointer + 3 * FPGA_SPACING;
+	fpga_value = ioread32(address);
+	printk(KERN_INFO "Reading from address: %u\n", address);
 	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
-    int tmp = fpga_value;
+    tmp = fpga_value;
     for(i = 0; i<11; i++)
     {
 		temp_char = tmp % 10;
@@ -322,38 +341,27 @@ static ssize_t sys_read_D(struct device* dev, struct device_attribute* attr, cha
 		return retval;
 	return retval ? retval : copied;
 }
-/*
-static struct device_attribute hello_PID_attrs[] = {
-	__ATTR(P, S_IRUSR | S_IWUSR, sys_read_P, sys_set_P),
-	__ATTR(I, S_IRUSR | S_IWUSR, sys_read_I, sys_set_I),
-	__ATTR(D, S_IRUSR | S_IWUSR, sys_read_D, sys_set_D),
-	__ATTR_NULL,
-};
-
-static struct attribute_group hello_PID_attr_group = {
-	.attrs = hello_PID_attrs,
-};
-
-static const struct attribute_group *hello_PID_attr_groups[] = {
-	&hello_PID_attr_group,
-	NULL
-};
-
-static const struct device hello_device = {
-	.class = hello_class,
-	.parent = NULL,
-	.devt = MKDEV(hello_major, 0),
-	.drvdata = NULL,
-	.init_name = CLASS_NAME "_" DEVICE_NAME,
-	.groups = hello_PID_attr_groups,
-};
-*/
 
 //Define the device attributes for the sysfs, and their handler functions.
 static DEVICE_ATTR(P, S_IRUSR | S_IWUSR, sys_read_P, sys_set_P);
 static DEVICE_ATTR(I, S_IRUSR | S_IWUSR, sys_read_I, sys_set_I);
 static DEVICE_ATTR(D, S_IRUSR | S_IWUSR, sys_read_D, sys_set_D);
 
+static struct attribute *hello_PID_attrs[] = {
+	&dev_attr_P.attr,
+	&dev_attr_I.attr,
+	&dev_attr_D.attr,
+	NULL,
+};
+
+static struct attribute_group hello_PID_attr_group = {
+	.attrs = hello_PID_attrs,
+};
+
+static const struct attribute_group* hello_PID_attr_groups[] = {
+	&hello_PID_attr_group,
+	NULL,
+};
 
 static int hello_init(void)
 {
@@ -377,8 +385,7 @@ static int hello_init(void)
 		goto failed_classreg;
 	}
 	//Now that we have a class, we can create our device node.
-	hello_device = device_create(hello_class, NULL, MKDEV(hello_major, 0), NULL, CLASS_NAME "_" DEVICE_NAME);
-//	device_register(hello_device);
+	hello_device = device_create_with_groups(hello_class, NULL, MKDEV(hello_major, 0), NULL, hello_PID_attr_groups, CLASS_NAME "_" DEVICE_NAME);
 	//If ther is an error, jump to the error state.
 	if( IS_ERR(hello_device))
 	{
@@ -395,7 +402,7 @@ static int hello_init(void)
 
 	base_addr_pointer = ioremap(BASE_ADDR, PAGE_SIZE);
 
-
+/*
 	//Create the sysfs device attribute files.
 	retval = device_create_file(hello_device, &dev_attr_P);
 	if(retval < 0)
@@ -408,7 +415,7 @@ static int hello_init(void)
 	retval = device_create_file(hello_device, &dev_attr_D);
 	if(retval < 0)
 		printk(KERN_WARNING "Failed to create /sys endpoint - continuing\n");
-
+*/
 	printk(KERN_ALERT "Hello, world\n");
 
 	//Initialize the mutex lock.
@@ -428,12 +435,12 @@ static int hello_init(void)
 
 static void hello_exit(void)
 {
-
+/*
 	//Remove the attribute files, to be nice.
 	device_remove_file(hello_device, &dev_attr_P);
 	device_remove_file(hello_device, &dev_attr_I);
 	device_remove_file(hello_device, &dev_attr_D);
-
+*/
 	//Unmap the I/O memmory
 	iounmap(base_addr_pointer);
 	//Release the memmory region so other proccesses can claim it.
