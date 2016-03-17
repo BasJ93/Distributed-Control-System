@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2015.4 (64-bit)
+# SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+# 
+# Start of session at: Thu Feb 18 11:37:54 2016
+# Process ID: 10378
+# Current directory: /home/bas/workspace/simple_axi_interface/simple_axi_interface.sdk/webtalk
+# Command line: wbtcv -mode batch -source sdk_webtalk.tcl
+# Log file: /home/bas/workspace/simple_axi_interface/simple_axi_interface.sdk/webtalk/webtalk.log
+# Journal file: /home/bas/workspace/simple_axi_interface/simple_axi_interface.sdk/webtalk/webtalk.jou
+#-----------------------------------------------------------
+source sdk_webtalk.tcl

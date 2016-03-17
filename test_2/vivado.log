@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2015.4 (64-bit)
+# SW Build 1412921 on Wed Nov 18 09:44:32 MST 2015
+# IP Build 1412160 on Tue Nov 17 13:47:24 MST 2015
+# Start of session at: Thu Feb 25 11:30:53 2016
+# Process ID: 16712
+# Current directory: /home/bas/workspace/test_2
+# Command line: vivado
+# Log file: /home/bas/workspace/test_2/vivado.log
+# Journal file: /home/bas/workspace/test_2/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /home/bas/workspace/test_2/test_2.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/bas/workspace/ip_repo'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2015.4/data/ip'.
+open_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:05 . Memory (MB): peak = 5826.773 ; gain = 150.262 ; free physical = 3770 ; free virtual = 10417
+launch_sdk -workspace /home/bas/workspace/test_2/test_2.sdk -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf
+INFO: [Vivado 12-393] Launching SDK...
+INFO: [Vivado 12-417] Running xsdk -workspace /home/bas/workspace/test_2/test_2.sdk -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf
+INFO: [Vivado 12-3157] SDK launch initiated. Please check console for any further messages.
+exit
+INFO: [Common 17-206] Exiting Vivado at Thu Feb 25 12:22:54 2016...

@@ -1,0 +1,16 @@
+Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2015.4 (lin64) Build 1412921 Wed Nov 18 09:44:32 MST 2015
+| Date         : Wed Feb 17 14:38:51 2016
+| Host         : Mimas running 64-bit Debian GNU/Linux 8.3 (jessie)
+| Command      : upgrade_ip
+| Device       : xc7z020clg484-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'simple_axi_interface_simple_axi_interface_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of simple_axi_interface_simple_axi_interface_0_0 from user.org:user:simple_axi_interface:1.0 (Rev. 2) to user.org:user:simple_axi_interface:1.01 (Rev. 1)
+

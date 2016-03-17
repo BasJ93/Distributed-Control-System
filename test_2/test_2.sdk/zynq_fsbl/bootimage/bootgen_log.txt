@@ -1,0 +1,21 @@
+[WARNING]: '-debug' option will be deprecated, please use '-log' option
+[INFO]   : Command line parsing completed successfully
+[INFO]   : Filename: /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/Debug/zynq_fsbl.elf
+[INFO]   : Parsing Partition Data
+[INFO]   : Filename: /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/design_1_wrapper.bit
+[INFO]   : Parsing Partition Data
+[INFO]   : Filename: /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/u-boot.elf
+[INFO]   : Parsing Partition Data
+[INFO]   : Filename: /media/bas/BOOT/devicetree.dtb
+[INFO]   :  Load: 2a00000
+[INFO]   : Parsing Partition Data
+[INFO]   : Filename: /media/bas/BOOT/uramdisk.image.gz
+[INFO]   :  Load: 2000000
+[INFO]   : Parsing Partition Data
+[INFO]   : Filename: /home/bas/linux-xlnx/arch/arm/boot/uImage.bin
+[INFO]   :  Load: 3000000
+[INFO]   : Parsing Partition Data
+[INFO]   : BIF file parsing completed successfully
+[INFO]   : Building image - the_ROM_image
+[ERROR]  : ELF Parsing Error !!!
+           Wrong Header Size

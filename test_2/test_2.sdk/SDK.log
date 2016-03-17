@@ -1,0 +1,159 @@
+13:11:15 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+13:11:19 INFO  : XSDB server has started successfully.
+13:11:19 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+11:25:17 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+11:25:19 INFO  : XSDB server has started successfully.
+11:25:32 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+11:25:32 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+11:29:54 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
+11:29:54 INFO  : Creating new bif file /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/zynq_fsbl.bif
+11:29:55 INFO  : Bootgen command execution is done.
+14:42:56 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+14:42:57 INFO  : XSDB server has started successfully.
+14:42:58 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+14:42:58 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+14:43:01 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1456321360000,  Project:1455797077000
+14:43:01 INFO  : The hardware specification for project 'design_1_wrapper_hw_platform_0' is different from /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+14:43:01 INFO  : Copied contents of /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_0/system.hdf.
+14:43:06 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+14:43:07 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-9ce9bf92a1eb4392bdcc0ba2d953967c-rtkit-daemon.service-MUaOeE"
+
+14:43:07 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/pulse-PKdhtXMmr18n"
+ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-9ce9bf92a1eb4392bdcc0ba2d953967c-cups.service-wer4Cp"
+
+14:43:07 ERROR : Failed to call sync_sw_with_hw_change
+Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors.
+
+14:43:07 ERROR : Error updating BSP project MSS files.
+14:43:08 INFO  : Updating hardware inferred compiler options for zynq_fsbl.
+14:43:08 INFO  : Clearing existing target manager status.
+14:43:12 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+14:43:12 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+14:45:18 INFO  : Saving repository preferences.
+14:45:18 INFO  : Reading in cores from local repositories: 
+		 /home/bas/device-tree-xlnx
+14:45:19 INFO  : Cleaning BSP projects in the workspace.
+16:24:02 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1456327441000,  Project:1456321360000
+16:24:02 INFO  : Project design_1_wrapper_hw_platform_0's source hardware specification located at /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf is now different from the local copy.
+		 The local copy will be replaced with the source specification and your workspace will be updated.
+16:24:16 INFO  : Copied contents of /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_0/system.hdf.
+16:24:20 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+16:24:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-9ce9bf92a1eb4392bdcc0ba2d953967c-rtkit-daemon.service-MUaOeE"
+
+16:24:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/pulse-PKdhtXMmr18n"
+ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-9ce9bf92a1eb4392bdcc0ba2d953967c-cups.service-wer4Cp"
+
+16:24:21 ERROR : Failed to call sync_sw_with_hw_change
+Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors.
+
+16:24:22 ERROR : Error updating BSP project MSS files.
+16:24:22 INFO  : Updating hardware inferred compiler options for zynq_fsbl.
+16:24:22 INFO  : Clearing existing target manager status.
+16:24:22 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+16:24:23 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+16:24:56 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+16:24:56 ERROR :  [Common 17-39] 'hsi::current_sw_design' failed due to earlier errors.
+16:24:56 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+16:24:56 INFO  : Unable to read in MSS file /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl_bsp/system.mss : null
+16:25:07 ERROR : Unexpected error while parsing XMD response ￿: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+08:30:45 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+08:30:46 INFO  : XSDB server has started successfully.
+08:30:46 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+08:30:46 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+08:30:46 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+08:30:53 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+11:10:12 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1456328086000,  Project:1456327441000
+11:10:12 INFO  : Project design_1_wrapper_hw_platform_0's source hardware specification located at /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf is now different from the local copy.
+		 The local copy will be replaced with the source specification and your workspace will be updated.
+11:10:19 INFO  : Copied contents of /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_0/system.hdf.
+11:10:24 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+11:10:25 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-8545ad022caf44adbdc4c63eafb15b98-cups.service-8HvUcI"
+
+11:10:25 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/pulse-PKdhtXMmr18n"
+ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-8545ad022caf44adbdc4c63eafb15b98-rtkit-daemon.service-PPAO04"
+
+11:10:25 ERROR : Failed to call sync_sw_with_hw_change
+Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors.
+
+11:10:25 ERROR : Error updating BSP project MSS files.
+11:10:26 INFO  : Updating hardware inferred compiler options for zynq_fsbl.
+11:10:26 INFO  : Clearing existing target manager status.
+11:10:30 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+11:10:31 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+11:10:31 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:31 ERROR :  [Common 17-39] 'hsi::current_sw_design' failed due to earlier errors.
+11:10:31 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:31 INFO  : Unable to read in MSS file /home/bas/workspace/test_2/test_2.sdk/device_tree_bsp_0/system.mss : null
+11:10:31 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:31 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:39 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:39 ERROR :  [Common 17-39] 'hsi::current_sw_design' failed due to earlier errors.
+11:10:39 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:39 INFO  : Unable to read in MSS file /home/bas/workspace/test_2/test_2.sdk/device_tree_bsp_0/system.mss : null
+11:10:39 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+11:10:39 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+11:10:39 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+11:10:40 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+11:12:47 ERROR : Unexpected error while parsing XMD response ￿: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+11:31:21 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+11:31:22 INFO  : XSDB server has started successfully.
+11:31:22 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+11:31:22 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+11:31:23 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+11:31:28 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+11:46:30 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
+11:46:30 INFO  : Overwriting existing bif file /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/zynq_fsbl.bif
+11:46:31 INFO  : Bootgen command execution is done.
+11:48:06 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
+11:48:06 INFO  : Bootgen command execution is done.
+09:57:05 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:57:07 INFO  : XSDB server has started successfully.
+09:57:10 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:57:10 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:57:11 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+09:57:15 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1456476946000,  Project:1456328086000
+09:57:15 INFO  : The hardware specification for project 'design_1_wrapper_hw_platform_0' is different from /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:57:15 INFO  : Copied contents of /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_0/system.hdf.
+09:57:20 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+09:57:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-b3c42f4382f5484b949699c7e1270a6a-cups.service-U4yqnF"
+
+09:57:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/systemd-private-b3c42f4382f5484b949699c7e1270a6a-rtkit-daemon.service-4mEpIn"
+ERROR: [Hsi 55-1433] Error boost::filesystem::directory_iterator::construct: Permission denied: "/tmp/pulse-PKdhtXMmr18n"
+
+09:57:21 ERROR : Failed to call sync_sw_with_hw_change
+Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors.
+
+09:57:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+09:57:21 ERROR :  [Common 17-39] 'hsi::current_sw_design' failed due to earlier errors.
+09:57:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+09:57:21 INFO  : Unable to read in MSS file /home/bas/workspace/test_2/test_2.sdk/device_tree_bsp_0/system.mss : null
+09:57:21 ERROR : (XSDB Server)ERROR: [Hsi 55-1558] Software Design system system is not found
+
+09:57:21 ERROR : Failed in generating sources
+09:57:21 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:57:21 ERROR : Error updating BSP project MSS files.
+09:57:22 INFO  : Updating hardware inferred compiler options for zynq_fsbl.
+09:57:22 INFO  : Clearing existing target manager status.
+09:57:26 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+09:57:26 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+09:57:26 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+09:57:27 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+11:03:26 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
+11:03:26 INFO  : Bootgen command execution is done.
+11:05:09 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
+11:05:09 INFO  : Bootgen command execution is done.
+13:05:03 ERROR : Unexpected error while parsing XMD response ￿: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
