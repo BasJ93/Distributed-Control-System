@@ -1,0 +1,1 @@
+cmd_/home/bas/workspace/kernel_mod_PID/build/PID.ko := arm-xilinx-linux-gnueabi-ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/bas/workspace/kernel_mod_PID/build/PID.ko /home/bas/workspace/kernel_mod_PID/build/PID.o /home/bas/workspace/kernel_mod_PID/build/PID.mod.o
