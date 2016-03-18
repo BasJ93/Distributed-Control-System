@@ -353,11 +353,17 @@ static ssize_t sys_read_D(struct device* dev, struct device_attribute* attr, cha
 static DEVICE_ATTR(P, S_IRUSR | S_IWUSR, sys_read_P, sys_set_P);
 static DEVICE_ATTR(I, S_IRUSR | S_IWUSR, sys_read_I, sys_set_I);
 static DEVICE_ATTR(D, S_IRUSR | S_IWUSR, sys_read_D, sys_set_D);
+static DEVICE_ATTR(State, S_IRUSR, NULL, NULL);
+static DEVICE_ATTR(Update, S_IWUSR, NULL, NULL);
+static DEVICE_ATTR(Emerg, S_IRUSR, NULL, NULL);
 
 static struct attribute *PID_attrs[] = {
 	&dev_attr_P.attr,
 	&dev_attr_I.attr,
 	&dev_attr_D.attr,
+	&dev_attr_State.attr,
+	&dev_attr_Update.attr,
+	&dev_attr_Emerg.attr,
 	NULL,
 };
 
@@ -419,7 +425,7 @@ static int PID_init(void)
 		goto failed_driverreg;
 	}
 
-	PID_device = device_create_with_groups(PID_class, NULL, MKDEV(PID_major, 0), NULL, PID_attr_groups, CLASS_NAME "_" DEVICE_NAME);
+	PID_device = device_create_with_groups(PID_class, NULL, MKDEV(PID_major, 0), NULL, PID_attr_groups, CLASS_NAME "_0");
 	//If ther is an error, jump to the error state.
 	if( IS_ERR(PID_device))
 	{
