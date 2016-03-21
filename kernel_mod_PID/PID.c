@@ -13,6 +13,7 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
+#include <linux/list.h>
 #include <asm/io.h>
 #include <asm/uaccess.h>
 
@@ -28,9 +29,15 @@ MODULE_AUTHOR("Bas Janssen");
 #define BASE_ADDR 0x43C00000
 #define FPGA_SPACING 1
 
+#define N_PID_MINORS 32
+
 static struct class* PID_class = NULL;
-static struct device* PID_device = NULL;
 static int PID_major = 0;
+
+static DECLARE_BITMAP(minors, N_PID_MINORS);
+
+static LIST_HEAD(device_list);
+static DEFINE_MUTEX(device_list_lock);
 
 //Make sure only one proccess can accessour the device
 static DEFINE_MUTEX(PID_device_mutex);
@@ -54,6 +61,8 @@ struct PID_data {
 	unsigned int * update_address;
 	unsigned int * emerg_address;
 	int 			message_read;
+	struct list_head device_entry;
+	dev_t		   devt;
 	};
 
 
@@ -130,11 +139,16 @@ static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t le
 
 static int PID_open(struct inode* inode, struct file* filp)
 {
-	struct PID_data *PID;
+	struct PID_data *PID = platform_get_drvdata(pltform_PID);
+	
+	mutex_lock(&device_list_lock);
 
-	PID = kzalloc(sizeof(*PID), GFP_KERNEL);
-	if(!PID)
-		return -ENOMEM;
+	list_for_each_entry(PID, &device_list, device_entry) {
+		if(PID->devt == inode->i_rdev) {
+			status = 0;
+		}
+	}
+
 	//Try to lock the device, if it fails the device is already in use.
 	if(!mutex_trylock(&PID_device_mutex))
 	{
@@ -142,9 +156,6 @@ static int PID_open(struct inode* inode, struct file* filp)
 		return -EBUSY;
 	}
 
-	PID->setpoint_address = base_addr_pointer + (iminor(inode) * 5 * FPGA_SPACING);
-	PID->P_address = PID->setpoint_address + FPGA_SPACING;
-	PID->position_address = PID->setpoint_address + (2 * FPGA_SPACING);
 	PID->message_read = 0;
 
 	filp->private_data = PID;
@@ -376,13 +387,79 @@ static const struct attribute_group* PID_attr_groups[] = {
 	NULL,
 };
 
-static int PID_probe(void)
+static int PID_probe(struct platform_device *pltform_PID)
 {
-	return 0;
+	unsigned long minor;
+	int status;
+	unsigned int *property;
+	unsigned int *base_reg;
+	int lenght;
+	char temp1, temp2, temp3, temp4;
+
+	struct PID_data *PID;
+
+	PID = kzalloc(sizeof(*PID), GFP_KERNEL);
+	if(!PID)
+		return -ENOMEM;
+	
+	INIT_LIST_HEAD(&PID->device_entry);
+
+	mutex_lock(&device_list_lock);
+	minor = find_first_zero_bit(minors, N_PID_MINORS);
+	if (minor < N_PID_MINORS)
+	{
+		struct device *dev;
+		
+		PID->devt = MKDEV(PID_major, minor);
+		dev = device_create_with_groups(PID_class, NULL, PID->devt, NULL, PID_attr_groups, CLASS_NAME "%d", minor);
+		status = PTR_ERR_OR_ZERO(dev);
+	}
+	else
+	{
+		printk(KERN_DEBUG "No minor number available!\n");
+		status = -ENODEV;
+	}
+	if( status == 0)
+	{
+		printk(KERN_INFO "New PID controller PID%d\n", minor);
+		set_bit(minor, minors);
+		list_add(&PID->device_entry, &device_list);
+		property = of_get_property(pltform_PID->dev.of_node, "reg", &lenght);
+		temp1 = property[0];
+		temp2 = (property[0]>>8);
+		temp3 = (property[0]>>16);
+		temp4 = property[0]>>24;
+		base_reg = (temp1<<24) + (temp2<<16) + (temp3<<8) + temp4;
+		PID->setpoint_address = base_reg;
+		PID->P_address = base_reg + 1;
+		PID->I_address = base_reg + 2;
+		PID->D_address = base_reg + 3;
+		PID->update_address = base_reg + 4;
+		PID->state_address = base_reg + 5;
+		PID->emerg_address = base_reg + 6;
+		PID->position_address = base_reg + 7;
+	}
+	mutex_unlock(&device_list_lock);
+	
+	if(status)
+		kfree(PID);
+	else
+		platform_set_drvdata(pltform_PID, PID);
+
+	return status;
 }
 
-static int PID_remove(void)
+static int PID_remove(struct platform_device *pltform_PID)
 {
+	struct PID_data *PID = platform_get_drvdata(pltform_PID);
+
+	mutex_lock(&device_list_lock);
+	list_del(&PID->device_entry);
+	device_destroy(PID_class, PID->devt);
+	clear_bit(MINOR(PID->devt), minors);
+	kfree(PID);
+	mutex_unlock(&device_list_lock);
+
 	return 0;
 }
 
@@ -425,15 +502,6 @@ static int PID_init(void)
 		goto failed_driverreg;
 	}
 
-	PID_device = device_create_with_groups(PID_class, NULL, MKDEV(PID_major, 0), NULL, PID_attr_groups, CLASS_NAME "_0");
-	//If ther is an error, jump to the error state.
-	if( IS_ERR(PID_device))
-	{
-		printk(KERN_NOTICE "Error while creating device\n");
-		retval = PTR_ERR(PID_device);
-		goto failed_devreg;
-	}
-
 	if( request_mem_region(BASE_ADDR, PAGE_SIZE, CLASS_NAME) == NULL)
 	{
 		printk(KERN_WARNING "Unable to obtain physical I/O addresses\n");
@@ -449,8 +517,6 @@ static int PID_init(void)
 
 	failed_memregion:
 	//If one of the registrations fails, undo all the parts that went before it as well.
-	failed_devreg:
-		platform_driver_unregister(&PID_driver);
 	failed_driverreg:
 		class_destroy(PID_class);
 	failed_classreg:
@@ -466,7 +532,7 @@ static void PID_exit(void)
 	//Release the memmory region so other proccesses can claim it.
 	release_mem_region(BASE_ADDR, PAGE_SIZE);
 	//When we remove the driver, destroy it's device(s), class and major number.
-	device_destroy(PID_class, MKDEV(PID_major, 0));
+	//device_destroy(PID_class, MKDEV(PID_major, 0));
 	platform_driver_unregister(&PID_driver);
 	class_destroy(PID_class);
 	unregister_chrdev(PID_major, DEVICE_NAME);

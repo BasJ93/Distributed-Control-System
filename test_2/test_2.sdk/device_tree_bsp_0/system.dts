@@ -60,12 +60,12 @@
 	status = "okay";
 
 	ethercat@0x00 {
-		compatible="spidev";
+		compatible="rohm,dh2228fv";
 		spi-max-frequency= <800000>;
 		reg = <1>;
 	};
 	ethercat@0x01 {
-		compatible="spidev";
+		compatible="rohm,dh2228fv";
 		spi-max-frequency= <800000>;
 		reg = <2>;
 	};
