@@ -36,16 +36,6 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="ip/simple_axi_interface_rst_processing_system7_0_50M_0/simple_axi_interface_rst_processing_system7_0_50M_0.xci"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="ip/simple_axi_interface_processing_system7_0_0/simple_axi_interface_processing_system7_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="ip/simple_axi_interface_processing_system7_0_axi_periph_0/simple_axi_interface_processing_system7_0_axi_periph_0.xci"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="ip/simple_axi_interface_simple_axi_interface_0_0/simple_axi_interface_simple_axi_interface_0_0.xci"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="hdl/simple_axi_interface.vhd"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="ip/simple_axi_interface_auto_pc_0/simple_axi_interface_auto_pc_0.xci"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="hdl/simple_axi_interface.hwdef"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="simple_axi_interface_ooc.xdc"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="hw_handoff/simple_axi_interface_bd.tcl"/>
-        <CompFileExtendedInfo CompFileName="simple_axi_interface.bd" FileRelPathName="hw_handoff/simple_axi_interface.hwh"/>
       </File>
       <File Path="$PSRCDIR/sources_1/bd/simple_axi_interface/hdl/simple_axi_interface_wrapper.vhd">
         <FileInfo>
