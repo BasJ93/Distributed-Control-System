@@ -1,3 +1,7 @@
 11:26:42 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
 11:26:45 INFO  : XSDB server has started successfully.
 11:26:46 INFO  : Processing command line option -hwspec /home/bas/workspace/simple_axi_interface/simple_axi_interface.sdk/simple_axi_interface_wrapper.hdf.
+09:52:50 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:52:53 INFO  : XSDB server has started successfully.
+09:52:56 INFO  : Processing command line option -hwspec /home/bas/workspace/simple_axi_interface/simple_axi_interface.sdk/simple_axi_interface_wrapper.hdf.
+09:52:56 INFO  : Checking for hwspec changes in the project simple_axi_interface_wrapper_hw_platform_0.

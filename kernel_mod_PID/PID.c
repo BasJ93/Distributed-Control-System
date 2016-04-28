@@ -77,7 +77,7 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 	struct PID_data *PID;
 	ssize_t retval;
 	ssize_t copied = 0;
-	int fpga_value;
+	unsigned int fpga_value;
 	char data[11];
 	char temp_char;
 	int i = 0;
@@ -129,14 +129,14 @@ static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t le
 {
 	struct PID_data *PID;
 	ssize_t retval;
-	int converted_value;
+	unsigned int converted_value;
 	ssize_t count = lenght;
 
 	//Grab the PID_data struct out of the file struct.
 	PID = filp->private_data;
 
 	//Since the data we need is in userspace we need to copy it to kernel space so we can use it.
-	retval = kstrtoint_from_user(buffer, count, 0, &converted_value);
+	retval = kstrtouint_from_user(buffer, count, 0, &converted_value);
 	if(retval)
 		return retval;
 	//Write to the I/O register
@@ -437,13 +437,148 @@ static ssize_t sys_read_D(struct device* dev, struct device_attribute* attr, cha
 	return retval ? retval : copied;
 }
 
+//Read the stus register
+static ssize_t sys_read_State(struct device* dev, struct device_attribute* attr, char *buffer)
+{
+	struct PID_data *PID;
+	int retval;
+	int copied;
+	char data[11];
+	char temp_char;
+	int i = 0;
+	int j = 0;
+	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int fpga_value;
+	int tmp;
+	unsigned int * address;
+
+	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
+	list_for_each_entry(PID, &device_list, device_entry) {
+		//Check if the struct is the correct one.
+		if(PID->devt == dev->devt) {
+			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
+			address = PID->state_address;
+		}
+	}
+
+	fpga_value = ioread32(address);
+	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
+    tmp = fpga_value;
+    for(i = 0; i<11; i++)
+    {
+		temp_char = tmp % 10;
+        data[i] = '0' + temp_char;
+        tmp   = tmp/10;
+    }
+	for(i = 0; i<11; i++)
+	{
+		if(data[9-i] != '0')
+		{
+			for(j = 0; j<(11-i); j++)
+			{
+				int_array[j] = data[9-i-j];
+			}
+			int_array[j+1] = '\0';
+			int_array[j+2] = '\n';
+			break;
+		}
+	}
+	//Check how long the char array is after we build it.
+	copied = sizeof(int_array);
+
+	retval = copy_to_user(buffer, &int_array, copied);
+	if(retval)
+		return retval;
+	return retval ? retval : copied;
+}
+
+//Write to the update register
+static ssize_t sys_set_Update(struct device* dev, struct device_attribute* attr, const char* buffer, size_t lenght)
+{
+	struct PID_data *PID;
+ 	int retval;
+	int converted_value;
+	int count = lenght;
+	unsigned int * address;
+
+	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
+	list_for_each_entry(PID, &device_list, device_entry) {
+		//Check if the struct is the correct one.
+		if(PID->devt == dev->devt) {
+			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
+			address = PID->update_address;
+		}
+	}
+
+	retval = kstrtoint(buffer, 0, &converted_value);
+	if(retval)
+		return retval;
+	iowrite32(converted_value, address);
+	return retval ? retval : count;
+}
+
+//Read the emergency state
+static ssize_t sys_read_Emerg(struct device* dev, struct device_attribute* attr, char *buffer)
+{
+	struct PID_data *PID;
+	int retval;
+	int copied;
+	char data[11];
+	char temp_char;
+	int i = 0;
+	int j = 0;
+	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int fpga_value;
+	int tmp;
+	unsigned int * address;
+
+	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
+	list_for_each_entry(PID, &device_list, device_entry) {
+		//Check if the struct is the correct one.
+		if(PID->devt == dev->devt) {
+			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
+			address = PID->emerg_address;
+		}
+	}
+
+	fpga_value = ioread32(address);
+	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
+    tmp = fpga_value;
+    for(i = 0; i<11; i++)
+    {
+		temp_char = tmp % 10;
+        data[i] = '0' + temp_char;
+        tmp   = tmp/10;
+    }
+	for(i = 0; i<11; i++)
+	{
+		if(data[9-i] != '0')
+		{
+			for(j = 0; j<(11-i); j++)
+			{
+				int_array[j] = data[9-i-j];
+			}
+			int_array[j+1] = '\0';
+			int_array[j+2] = '\n';
+			break;
+		}
+	}
+	//Check how long the char array is after we build it.
+	copied = sizeof(int_array);
+
+	retval = copy_to_user(buffer, &int_array, copied);
+	if(retval)
+		return retval;
+	return retval ? retval : copied;
+}
+
 //Define the device attributes for the sysfs, and their handler functions.
 static DEVICE_ATTR(P, S_IRUSR | S_IWUSR, sys_read_P, sys_set_P);
 static DEVICE_ATTR(I, S_IRUSR | S_IWUSR, sys_read_I, sys_set_I);
 static DEVICE_ATTR(D, S_IRUSR | S_IWUSR, sys_read_D, sys_set_D);
-static DEVICE_ATTR(State, S_IRUSR, NULL, NULL);
-static DEVICE_ATTR(Update, S_IWUSR, NULL, NULL);
-static DEVICE_ATTR(Emerg, S_IRUSR, NULL, NULL);
+static DEVICE_ATTR(State, S_IRUSR, sys_read_State, NULL);
+static DEVICE_ATTR(Update, S_IWUSR, NULL, sys_set_Update);
+static DEVICE_ATTR(Emerg, S_IRUSR, sys_read_Emerg, NULL);
 
 static struct attribute *PID_attrs[] = {
 	&dev_attr_P.attr,

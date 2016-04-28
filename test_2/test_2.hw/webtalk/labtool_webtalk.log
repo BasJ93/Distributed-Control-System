@@ -5,4 +5,8 @@
     ** Copyright 1986-2015 Xilinx, Inc. All Rights Reserved.
 
 source /home/bas/workspace/test_2/test_2.hw/webtalk/labtool_webtalk.tcl -notrace
-INFO: [Common 17-206] Exiting Webtalk at Tue Mar 29 16:48:30 2016...
+
+    while executing
+"webtalk_transmit -clientid 2467823212 -regid "210759927_0_0_464" -xml /home/bas/workspace/test_2/test_2.hw/webtalk/usage_statistics_ext_labtool.xml -h..."
+    (file "/home/bas/workspace/test_2/test_2.hw/webtalk/labtool_webtalk.tcl" line 35)
+INFO: [Common 17-206] Exiting Webtalk at Fri Apr  8 09:58:54 2016...

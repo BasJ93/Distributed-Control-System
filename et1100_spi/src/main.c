@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdint.h>
 
 
 #define READ 0x03
@@ -34,20 +35,22 @@ static const char *spi_name = "/dev/spidev1.1";
 int main()
 {
 
+	uint16_t address;
 	char cmd[6];
-	cmd[0] = READ;
-	cmd[1] = 0x64;
+	address = 0x0000;
+	cmd[0] = 0x00;
+	cmd[1] = 0x03;
 	cmd[2] = WAIT_STATE;
-	cmd[3] = WAIT_STATE;
-	cmd[4] = WAIT_STATE;
-	cmd[5] = WAIT_STATE;
+	cmd[3] = 0x00;
+	cmd[4] = 0x00;
+	cmd[5] = 0xFF;
 
 	int res;
 	//Open het device dat de slave voorsteld.
 	int spiDev = open(spi_name, O_RDWR);
 
 	//De slave maakt gebruik van SPI mode 3, set de driver in dat deze modus gebruikt wordt.
-	int mode = SPI_MODE_0;
+	int mode = SPI_MODE_3;
 	ioctl(spiDev, SPI_IOC_WR_MODE, &mode);
 
 	//We sturen de data uit met het most significat bit eerst.
@@ -72,9 +75,12 @@ int main()
 	xfer.cs_change = 0;
 	xfer.bits_per_word = 8;
 	//Verzend de data naar de slave
-	res = ioctl(spiDev, SPI_IOC_MESSAGE(1), &xfer);
+	while(1)
+	{
+		res = ioctl(spiDev, SPI_IOC_MESSAGE(1), &xfer);
 
-	printf("Transfer: %x%X%X%X%X%X\n", cmd[0], cmd[1], cmd[2], cmd[3], cmd[4], cmd[5]);
-	printf("Result: %x%x%x%x%x%x\n", rxBuffer[0], rxBuffer[1], rxBuffer[2], rxBuffer[3], rxBuffer[4], rxBuffer[5]);
+		printf("Transfer: %x%X%X%X%X%X\n", cmd[0], cmd[1], cmd[2], cmd[3], cmd[4], cmd[5]);
+		printf("Result: %x%x%x%x%x%x\n", rxBuffer[0], rxBuffer[1], rxBuffer[2], rxBuffer[3], rxBuffer[4], rxBuffer[5]);
+	}
     return 0;
 }

@@ -157,3 +157,31 @@ Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors
 11:05:09 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin
 11:05:09 INFO  : Bootgen command execution is done.
 13:05:03 ERROR : Unexpected error while parsing XMD response ￿: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 
+09:53:37 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:53:38 INFO  : XSDB server has started successfully.
+09:53:38 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:53:38 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:53:38 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+09:53:44 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+14:25:42 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+14:25:43 INFO  : XSDB server has started successfully.
+14:25:43 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+14:25:43 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+14:25:44 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+14:25:49 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:20:37 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:20:38 INFO  : XSDB server has started successfully.
+09:20:38 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:20:38 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:20:39 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+09:20:44 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+11:16:13 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+11:16:15 INFO  : XSDB server has started successfully.
+11:16:15 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+11:16:15 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+11:16:15 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+11:16:21 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
