@@ -94,7 +94,7 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 	//Read from the I/O register
 	fpga_value = ioread32(PID->position_address);
 
-	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and filp it while trimming leading 0's.
+	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and flip it while trimming leading 0's.
     tmp = fpga_value;
     for(i = 0; i<11; i++)
     {
@@ -110,11 +110,21 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
+
 	}
+
 	//Check how long the char array is after we build it.
 	copied = sizeof(int_array);
 
@@ -266,8 +276,16 @@ static ssize_t sys_read_P(struct device* dev, struct device_attribute* attr, cha
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
 	}
@@ -345,8 +363,16 @@ static ssize_t sys_read_I(struct device* dev, struct device_attribute* attr, cha
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
 	}
@@ -423,8 +449,16 @@ static ssize_t sys_read_D(struct device* dev, struct device_attribute* attr, cha
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
 	}
@@ -478,8 +512,16 @@ static ssize_t sys_read_State(struct device* dev, struct device_attribute* attr,
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
 	}
@@ -558,8 +600,16 @@ static ssize_t sys_read_Emerg(struct device* dev, struct device_attribute* attr,
 			{
 				int_array[j] = data[9-i-j];
 			}
-			int_array[j+1] = '\0';
-			int_array[j+2] = '\n';
+			if(j<10)
+			{
+				int_array[j+1] = '\0';
+				int_array[j+2] = '\n';
+			}
+			else
+			{
+				int_array[10] = '\0';
+				int_array[11] = '\n';
+			}	
 			break;
 		}
 	}
