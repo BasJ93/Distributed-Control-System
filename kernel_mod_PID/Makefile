@@ -14,4 +14,10 @@ else
 	BUILD := $(PWD)/build
 default:
 	$(MAKE) -C $(KERNELDIR) M=$(BUILD) src=$(PWD) modules
+	mv build/PID.ko Debug/PID.ko
+# If we run make install, copy the module to the Zynq using scp
+install:
+	$(MAKE) -C $(KERNELDIR) M=$(BUILD) src=$(PWD) modules
+	mv build/PID.ko Debug/PID.ko
+	scp Debug/PID.ko root@zynq:/media/card
 endif
