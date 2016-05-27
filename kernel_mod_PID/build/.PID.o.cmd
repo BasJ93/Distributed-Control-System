@@ -784,6 +784,7 @@ deps_/home/bas/workspace/kernel_mod_PID/build/PID.o := \
     $(wildcard include/config/hibernate/callbacks.h) \
   include/linux/of_platform.h \
     $(wildcard include/config/of/address.h) \
+  include/linux/of_address.h \
   arch/arm/include/asm/uaccess.h \
     $(wildcard include/config/have/efficient/unaligned/access.h) \
     $(wildcard include/config/cpu/sw/domain/pan.h) \

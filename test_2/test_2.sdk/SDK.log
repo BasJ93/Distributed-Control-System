@@ -185,3 +185,33 @@ Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors
 11:16:15 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
 11:16:15 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
 11:16:21 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+08:50:06 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+08:50:08 INFO  : XSDB server has started successfully.
+08:50:14 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+08:50:14 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+08:50:14 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+08:50:22 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:08:30 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:08:32 INFO  : XSDB server has started successfully.
+09:08:32 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:08:32 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:08:32 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+09:08:37 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:11:35 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/Ubuntu_zynq/boot_image/BOOT.bin
+09:11:36 INFO  : Bootgen command execution is done.
+10:52:27 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:52:30 INFO  : XSDB server has started successfully.
+10:52:33 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+10:52:33 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+10:52:33 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+10:52:42 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+14:01:20 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+14:01:22 INFO  : XSDB server has started successfully.
+14:01:25 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+14:01:25 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+14:01:26 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+14:01:33 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.

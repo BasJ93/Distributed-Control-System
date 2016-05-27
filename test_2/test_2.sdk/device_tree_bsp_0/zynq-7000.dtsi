@@ -64,6 +64,18 @@
 		interrupt-parent = <&intc>;
 		ranges;
 
+		pid0: pid@43c00000 {
+			compatible = "fontys,PID";
+			reg = <0x43c00000 0x100>;
+			status = "okay";
+		};
+
+		pid1: pid@43c00100 {
+			compatible = "fontys,PID";
+			reg = <0x43c00100 0x100>;
+			status = "okay";
+		};
+
 		adc: adc@f8007100 {
 			compatible = "xlnx,zynq-xadc-1.00.a";
 			reg = <0xf8007100 0x20>;

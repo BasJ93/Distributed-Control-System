@@ -1,6 +1,14 @@
+
+#the_ROM_image:
+#{
+#	[bootloader]/home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/Debug/zynq_fsbl.elf
+#	/home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/design_1_wrapper.bit
+#	/home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/u-boot.elf
+#}
+
 the_ROM_image:
 {
-	[bootloader]/home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/Debug/zynq_fsbl.elf
-	/home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/design_1_wrapper.bit
-	/home/bas/workspace/test_2/test_2.sdk/design_1_wrapper_hw_platform_0/u-boot.elf
+	[bootloader]/home/bas/workspace/Ubuntu_zynq/boot_image/zynq_fsbl.elf
+	/home/bas/workspace/Ubuntu_zynq/boot_image/design_1_wrapper.bit
+	/home/bas/workspace/Ubuntu_zynq/boot_image/u-boot.elf
 }

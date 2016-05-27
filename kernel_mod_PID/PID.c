@@ -19,6 +19,7 @@
 #include <linux/slab.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+#include <linux/of_address.h>
 #include <linux/platform_device.h>
 #include <linux/list.h>
 #include <asm/io.h>
@@ -220,7 +221,7 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 {
 	struct PID_data *PID;
  	int retval;
-	int converted_value;
+	unsigned int converted_value;
 	unsigned int * address;
 	int count = lenght;
 
@@ -228,7 +229,7 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 	list_for_each_entry(PID, &device_list, device_entry) {
 		//Check if the struct is the correct one.
 		if(PID->devt == dev->devt) {
-			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
+			//Grab the address for the node that is being called.
 			if(strcmp(attr->attr.name, "P") == 0)
 				address = PID->P_address;
 			else if(strcmp(attr->attr.name, "I") == 0)
@@ -259,13 +260,13 @@ static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, 
 	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	//int tmp;
 	unsigned int * address;
-	int fpga_value;
+	unsigned int fpga_value;
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
 	list_for_each_entry(PID, &device_list, device_entry) {
 		//Check if the struct is the correct one.
 		if(PID->devt == dev->devt) {
-			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
+			//Grab the address for the node that is being called.
 			if(strcmp(attr->attr.name, "P") == 0)
 				address = PID->P_address;
 			else if(strcmp(attr->attr.name, "I") == 0)
@@ -337,10 +338,8 @@ static int PID_probe(struct platform_device *pltform_PID)
 {
 	int minor;
 	int status;
-	const unsigned int *property;
-	resource_size_t base_reg;
-	int lenght;
-	char temp1, temp2, temp3, temp4;
+	struct resource res;
+	int rc;
 
 	struct PID_data *PID;
 
@@ -370,23 +369,16 @@ static int PID_probe(struct platform_device *pltform_PID)
 		printk(KERN_INFO "New PID controller PID%d\n", minor);
 		set_bit(minor, minors);
 		list_add(&PID->device_entry, &device_list);
-		property = of_get_property(pltform_PID->dev.of_node, "reg", &lenght);
-		temp1 = property[0];
-		temp2 = (property[0]>>8);
-		temp3 = (property[0]>>16);
-		temp4 = property[0]>>24;
-		base_reg = (temp1<<24) + (temp2<<16) + (temp3<<8) + temp4;
-		if(memory_request == 0)
+		//Retreive the base address and request the memory region.
+		rc = of_address_to_resource(pltform_PID->dev.of_node, 0, &res);
+		if( request_mem_region(res.start, resource_size(&res), CLASS_NAME) == NULL)
 		{
-			if( request_mem_region(base_reg, PAGE_SIZE, CLASS_NAME) == NULL)
-			{
-				printk(KERN_WARNING "Unable to obtain physical I/O addresses\n");
-				goto failed_memregion;
-			}
-			PID->base_register = base_reg;
-			memory_request = 1;
+			printk(KERN_WARNING "Unable to obtain physical I/O addresses\n");
+			goto failed_memregion;
 		}
-		PID->setpoint_address =  ioremap(base_reg, 0xFF);
+		PID->base_register = res.start;
+		//Remap the memory region in to usable memory
+		PID->setpoint_address =  of_iomap(pltform_PID->dev.of_node, 0);
 		PID->P_address = PID->setpoint_address + 1;
 		PID->I_address = PID->setpoint_address + 2;
 		PID->D_address = PID->setpoint_address + 3;
@@ -413,6 +405,10 @@ static int PID_probe(struct platform_device *pltform_PID)
 static int PID_remove(struct platform_device *pltform_PID)
 {
 	struct PID_data *PID = platform_get_drvdata(pltform_PID);
+	struct resource res;
+	int rc;
+
+	rc = of_address_to_resource(pltform_PID->dev.of_node, 0, &res);
 
 	mutex_lock(&device_list_lock);
 	//Unmap the iomem
@@ -425,7 +421,7 @@ static int PID_remove(struct platform_device *pltform_PID)
 	clear_bit(MINOR(PID->devt), minors);
 	if(PID->base_register)
 	{
-		release_mem_region(PID->base_register, PAGE_SIZE);
+		release_mem_region(res.start, resource_size(&res));
 		memory_request = 0;
 	}
 	//Free the kernel memory
