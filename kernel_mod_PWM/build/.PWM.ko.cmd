@@ -1,0 +1,1 @@
+cmd_/home/bas/workspace/kernel_mod_PWM/build/PWM.ko := arm-xilinx-linux-gnueabi-ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/bas/workspace/kernel_mod_PWM/build/PWM.ko /home/bas/workspace/kernel_mod_PWM/build/PWM.o /home/bas/workspace/kernel_mod_PWM/build/PWM.mod.o
