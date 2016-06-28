@@ -30,7 +30,7 @@
 
 #define N_PID_MINORS 32
 
-static struct class* PID_class = NULL;   // HKMS: netjes dat je "alles" static maakt! JNSN: Dank je.
+static struct class* PID_class = NULL;
 static int PID_major = 0;
 
 static DECLARE_BITMAP(minors, N_PID_MINORS);
@@ -40,7 +40,6 @@ static LIST_HEAD(device_list);
 static DEFINE_MUTEX(device_list_lock);
 
 //Make sure only one proccess can accessour the device
-// HKMS: je hebt 2 mutexen, leg hier even kort uit waar ze toe dienen
 static DEFINE_MUTEX(PID_device_mutex);
 
 //Custom struct to store the data we want in the driver
@@ -70,16 +69,12 @@ struct PID_data{
 
 static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, loff_t* offset)
 {
-    // HKMS: ik mis het uitlezen van het minor nummer... die negeer je helemaal? Ik zou alsnog bewust 1 minor nummer gebruiken om toekomstige uitbreidingen niet in de weg te zitten
-	// JNSN: Ik heb werkelijk waar geen idee wat ik met het minor nummer zou moeten doen. Als ik het goed berijp uit de Spidev driver, bevat de file struct mijn struct die ik er in gestopt heb.
-	// JNSN: Uit deze struct kan ik mijn adressen halen.
 	struct PID_data* PID;
 	ssize_t retval = -1;
 	ssize_t copied = 0;
 	unsigned int fpga_value = 0;
 	char int_array[20];
 
-	//Grab the PID_data struct out of the file struct.
 	PID = filp->private_data;
 
 	//cat keeps requesting new data until it receives a "return 0", so we do a one shot.
@@ -87,15 +82,15 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 	{
 		return 0;
 	}
-	//Read from the I/O register
+	
 	fpga_value = ioread32(PID->position_address);
 
 	copied = snprintf(int_array, 20, "%i", fpga_value);
 
 	retval = copy_to_user(buffer, &int_array, copied);
+	
 	PID->message_read = 1;
 
-// HKMS: gebruik altijd accolades, ook al heb je maar 1 regel! Zie bijvoorbeeld deze security bug waarom: https://www.imperialviolet.org/2014/02/22/applebug.html
 	return retval ? retval : copied;
 }
 
@@ -111,6 +106,7 @@ static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t le
 
 	//Since the data we need is in userspace we need to copy it to kernel space so we can use it.
 	retval = kstrtouint_from_user(buffer, count, 0, &converted_value);
+	//Since the hardware PID controller devides the value by 100k, we must provide the value as value * 100k.
 	converted_value = converted_value * 100000;
 	//Write to the I/O register
 	iowrite32(converted_value, PID->setpoint_address);
@@ -126,8 +122,7 @@ static int PID_open(struct inode* inode, struct file* filp)
 	mutex_lock(&device_list_lock);
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
-	list_for_each_entry(PID, &device_list, device_entry) {   // HKMS: ik snap niet helemaal waarom dit in een gelinkte lijst moet
-															 // JNSN: dit komt rechtstreeks uit de voorbeelden in LDD3 en de Spidev driver. Als je een beter voorstel hebt hoor ik dat graag.
+	list_for_each_entry(PID, &device_list, device_entry) {
 		//Check if the struct is the correct one.
 		if(PID->devt == inode->i_rdev) {
 			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
@@ -214,6 +209,7 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 	}
 
 	retval = kstrtoint(buffer, 0, &converted_value);
+	//Since the hardware PID controller devides the value by 100k, we must provide the value as value * 100k.
 	converted_value = converted_value * 100000;
 	
 	iowrite32(converted_value, address);
@@ -275,7 +271,7 @@ static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, 
 			}
 		}
 	}
-	
+	//Since the hardware PID controller devides the value by 100k, we must provide the value as value * 100k. To read it back, we devicde by 100k again.
 	fpga_value = ioread32(address) / 100000;
 	
 	copied = snprintf(int_array, 20, "%i", fpga_value);
@@ -284,6 +280,8 @@ static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, 
 
 	return retval ? retval : copied;
 }
+
+//@TODO: Add handler functions for I, State and Emerg since I is a float and State and Emerg are not values but bitwise flags.
 
 //Define the device attributes for the sysfs, and their handler functions.
 static DEVICE_ATTR(P, S_IRUSR | S_IWUSR, sys_read_node, sys_set_node);
