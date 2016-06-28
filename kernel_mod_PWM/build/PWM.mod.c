@@ -32,6 +32,8 @@ __attribute__((section("__versions"))) = {
 	{ 0x23f4f9d, __VMLINUX_SYMBOL_STR(device_create_with_groups) },
 	{ 0xd3dbfbc4, __VMLINUX_SYMBOL_STR(_find_first_zero_bit_le) },
 	{ 0x17506ac5, __VMLINUX_SYMBOL_STR(kmem_cache_alloc) },
+	{ 0x373db350, __VMLINUX_SYMBOL_STR(kstrtoint) },
+	{ 0xe2d5255a, __VMLINUX_SYMBOL_STR(strcmp) },
 	{ 0x788fe103, __VMLINUX_SYMBOL_STR(iomem_resource) },
 	{ 0x37a0cba, __VMLINUX_SYMBOL_STR(kfree) },
 	{ 0x9bce482f, __VMLINUX_SYMBOL_STR(__release_region) },
@@ -40,10 +42,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xedc03953, __VMLINUX_SYMBOL_STR(iounmap) },
 	{ 0x87a7c782, __VMLINUX_SYMBOL_STR(of_address_to_resource) },
 	{ 0xf4fa543b, __VMLINUX_SYMBOL_STR(arm_copy_to_user) },
-	{ 0xe914e41e, __VMLINUX_SYMBOL_STR(strcpy) },
-	{ 0x5f754e5a, __VMLINUX_SYMBOL_STR(memset) },
-	{ 0x2196324, __VMLINUX_SYMBOL_STR(__aeabi_idiv) },
-	{ 0xff178f6, __VMLINUX_SYMBOL_STR(__aeabi_idivmod) },
+	{ 0xb81960ca, __VMLINUX_SYMBOL_STR(snprintf) },
 	{ 0x822137e2, __VMLINUX_SYMBOL_STR(arm_heavy_mb) },
 	{ 0xe187693c, __VMLINUX_SYMBOL_STR(kstrtouint_from_user) },
 	{ 0xefd6cf06, __VMLINUX_SYMBOL_STR(__aeabi_unwind_cpp_pr0) },
@@ -60,3 +59,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 MODULE_ALIAS("of:N*T*Cfontys,PWM*");
+MODULE_ALIAS("of:N*T*Cxlnx,IP-PWM-Struct-1.6*");

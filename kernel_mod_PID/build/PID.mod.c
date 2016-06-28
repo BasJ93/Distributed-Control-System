@@ -42,10 +42,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xedc03953, __VMLINUX_SYMBOL_STR(iounmap) },
 	{ 0x87a7c782, __VMLINUX_SYMBOL_STR(of_address_to_resource) },
 	{ 0xf4fa543b, __VMLINUX_SYMBOL_STR(arm_copy_to_user) },
-	{ 0xe914e41e, __VMLINUX_SYMBOL_STR(strcpy) },
-	{ 0x5f754e5a, __VMLINUX_SYMBOL_STR(memset) },
-	{ 0x2196324, __VMLINUX_SYMBOL_STR(__aeabi_idiv) },
-	{ 0xff178f6, __VMLINUX_SYMBOL_STR(__aeabi_idivmod) },
+	{ 0xb81960ca, __VMLINUX_SYMBOL_STR(snprintf) },
 	{ 0x822137e2, __VMLINUX_SYMBOL_STR(arm_heavy_mb) },
 	{ 0xe187693c, __VMLINUX_SYMBOL_STR(kstrtouint_from_user) },
 	{ 0xefd6cf06, __VMLINUX_SYMBOL_STR(__aeabi_unwind_cpp_pr0) },
@@ -62,3 +59,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 MODULE_ALIAS("of:N*T*Cfontys,PID*");
+MODULE_ALIAS("of:N*T*Cxlnx,PID-Struct-1.0*");

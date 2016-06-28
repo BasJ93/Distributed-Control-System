@@ -25,13 +25,8 @@
 #include <asm/io.h>
 #include <asm/uaccess.h>
 
-MODULE_LICENSE("Dual BSD/GPL");
-MODULE_AUTHOR("Bas Janssen");
-
 #define CLASS_NAME "PWM"
 #define DEVICE_NAME "PWM"
-
-#define FPGA_SPACING 1
 
 #define N_PWM_MINORS 32
 
@@ -50,54 +45,14 @@ static int memory_request = 0;
 
 //Custom struct to store the data we want in the driver
 struct PWM_data {
-	unsigned int * pulsewidth_address;
+	uint32_t* pulsewidth_address;
+	uint32_t* frequency_address;
+	uint32_t* pins_address;
 	int 		   message_read;
-	unsigned int   base_register;
+	uint32_t   base_register;
 	struct list_head device_entry;
 	dev_t		   devt;
 	};
-
-
-static int PWM_itoa(int value, char *buffer)
-{
-	char data[11];
-	char temp_char;
-	int i = 0;
-	int j;
-	int tmp;
-	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and flip it while trimming leading 0's.
-    tmp = value;
-    for(i = 0; i<11; i++)
-    {
-		temp_char = tmp % 10;
-        data[i] = '0' + temp_char;
-        tmp   = tmp/10;
-    }
-	for(i = 0; i<11; i++)
-	{
-		if(data[9-i] != '0')
-		{
-			for(j = 0; j<(11-i); j++)
-			{
-				int_array[j] = data[9-i-j];
-			}
-			if(j<11)
-			{
-				int_array[j-1] = '\n';
-				int_array[j] = '\0';
-			}
-			else
-			{
-				int_array[10] = '\n';
-				int_array[11] = '\0';
-			}
-			break;
-		}
-	}
-	strcpy(buffer, int_array);
-	return 0;
-}
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /*Device node handler functions and definition struct																*/
@@ -111,10 +66,10 @@ static int PWM_itoa(int value, char *buffer)
 static ssize_t PWM_read(struct file* filp, char __user *buffer, size_t lenght, loff_t* offset)
 {
 	struct PWM_data *PWM;
-	ssize_t retval;
+	ssize_t retval = -1;
 	ssize_t copied = 0;
-	unsigned int fpga_value;
-	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	unsigned int fpga_value = 0;
+	char int_array[20];
 
 	//Grab the PWM_data struct out of the file struct.
 	PWM = filp->private_data;
@@ -125,10 +80,7 @@ static ssize_t PWM_read(struct file* filp, char __user *buffer, size_t lenght, l
 	//Read from the I/O register
 	fpga_value = ioread32(PWM->pulsewidth_address);
 	
-	PWM_itoa(fpga_value, int_array);	
-
-	//Check how long the char array is after we build it.
-	copied = sizeof(int_array);
+	copied = snprintf(int_array, 20, "%i\n", fpga_value);
 
 	retval = copy_to_user(buffer, &int_array, copied);
 	PWM->message_read = 1;
@@ -140,8 +92,8 @@ static ssize_t PWM_read(struct file* filp, char __user *buffer, size_t lenght, l
 static ssize_t PWM_write(struct file* filp, const char __user *buffer, size_t lenght, loff_t* offset)
 {
 	struct PWM_data *PWM;
-	ssize_t retval;
-	unsigned int converted_value;
+	ssize_t retval = -1;
+	unsigned int converted_value = 0;
 	ssize_t count = lenght;
 
 	//Grab the PWM_data struct out of the file struct.
@@ -150,9 +102,9 @@ static ssize_t PWM_write(struct file* filp, const char __user *buffer, size_t le
 	//Since the data we need is in userspace we need to copy it to kernel space so we can use it.
 	retval = kstrtouint_from_user(buffer, count, 0, &converted_value);
 	if(retval > 8192)
+	{
 		retval = 8192;
-	if(retval)
-		return retval;
+	}
 	//Write to the I/O register
 	iowrite32(converted_value, PWM->pulsewidth_address);
 	return retval ? retval : count;
@@ -160,7 +112,7 @@ static ssize_t PWM_write(struct file* filp, const char __user *buffer, size_t le
 
 static int PWM_open(struct inode* inode, struct file* filp)
 {
-	int status;
+	int status = -1;
 	struct PWM_data *PWM;
 	mutex_lock(&device_list_lock);
 
@@ -205,6 +157,124 @@ struct file_operations PWM_fops = {
 };
 
 /*------------------------------------------------------------------------------------------------------*/
+/*Sysfs endpoint definitions and handler functions.														*/
+/*The sysfs nodes are used to transfer settings to the PID controller and read status information.		*/
+/*E.g. the values for the P, I and D factors for the settings, and Emergency stop for the status.		*/
+/*																										*/
+/*																										*/
+/*------------------------------------------------------------------------------------------------------*/
+
+static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, const char* buffer, size_t lenght)
+{
+	struct PWM_data *PWM;
+ 	int retval = -1;
+	unsigned int converted_value = 0;
+	unsigned int * address = 0;
+	int count = lenght;
+
+	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
+	list_for_each_entry(PWM, &device_list, device_entry) {
+		//Check if the struct is the correct one.
+		if(PWM->devt == dev->devt) {
+			//Grab the address for the node that is being called.
+		    // HKMS: ik zou een array maken van filenamen en adressen, loop door de namen om te kijken welke file
+		    // HKMS: benaderd wordt en neem dan het bijpassende adres over. Makkelijker configureren en voorkomt
+		    // HKMS: code explosie bij nog meer files
+			if(strcmp(attr->attr.name, "FREQUENCY") == 0)
+			{
+				address = PWM->frequency_address;
+				retval = kstrtoint(buffer, 0, &converted_value);
+			}
+			else if(strcmp(attr->attr.name, "DIRECTION") == 0)
+			{
+				address = PWM->pins_address;
+				retval = kstrtoint(buffer, 0, &converted_value);
+				converted_value = ioread32(address)|converted_value;
+			}
+			else if(strcmp(attr->attr.name, "ENABLE") == 0)
+			{
+				address = PWM->pins_address;
+				retval = kstrtoint(buffer, 0, &converted_value) << 1;
+				converted_value = ioread32(address)|converted_value;
+			}
+			else
+			{
+				printk(KERN_WARNING "Node does not exist\n");
+				return -EPERM;
+			}
+		}
+	}
+
+	iowrite32(converted_value, address);
+
+	return retval ? retval : count;
+}
+
+static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, char *buffer)
+{
+	struct PWM_data *PWM;
+	int retval = -1;
+	int copied = 0;
+	char int_array[20];
+	unsigned int * address = 0;
+	unsigned int fpga_value = 0;
+
+	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
+	list_for_each_entry(PWM, &device_list, device_entry) {
+		//Check if the struct is the correct one.
+		if(PWM->devt == dev->devt) {
+			//Grab the address for the node that is being called.
+			if(strcmp(attr->attr.name, "FREQUENCY") == 0)
+			{
+				address = PWM->frequency_address;
+			}
+			else if(strcmp(attr->attr.name, "DIRECTION") == 0)
+			{
+				address = PWM->pins_address;
+			}
+			else if(strcmp(attr->attr.name, "ENABLE") == 0)
+			{
+				address = PWM->pins_address;
+			}
+			else
+			{
+				printk(KERN_WARNING "Node does not exist\n");
+				return -EPERM;
+			}
+		}
+	}
+	
+	fpga_value = ioread32(address);
+
+	copied = snprintf(int_array, 20, "%i", fpga_value);
+
+	retval = copy_to_user(buffer, &int_array, copied);
+
+	return retval ? retval : copied;
+}
+
+//Define the device attributes for the sysfs, and their handler functions.
+static DEVICE_ATTR(FREQUENCY, S_IRUSR | S_IWUSR, sys_read_node, sys_set_node);
+static DEVICE_ATTR(ENABLE, S_IRUSR | S_IWUSR, sys_read_node, sys_set_node);
+static DEVICE_ATTR(DIRECTION, S_IRUSR | S_IWUSR, sys_read_node, sys_set_node);
+
+static struct attribute *PWM_attrs[] = {
+	&dev_attr_FREQUENCY.attr,
+	&dev_attr_ENABLE.attr,
+	&dev_attr_DIRECTION.attr,
+	NULL,
+};
+
+static struct attribute_group PWM_attr_group = {
+	.attrs = PWM_attrs,
+};
+
+static const struct attribute_group* PWM_attr_groups[] = {
+	&PWM_attr_group,
+	NULL,
+};
+
+/*------------------------------------------------------------------------------------------------------*/
 /*Platform driver functions and struct																	*/
 /*@PWM_dt_ids[] struct to store the compatible device tree names										*/
 /*@PWM_probe called when a compatible device is found in the device tree. Creates device and maps iomem	*/
@@ -214,6 +284,7 @@ struct file_operations PWM_fops = {
 
 static const struct of_device_id PWM_dt_ids[] = {
 	{ .compatible = "fontys,PWM"},
+	{ .compatible = "xlnx,IP-PWM-Struct-1.6"},
 	{},
 };
 
@@ -221,10 +292,10 @@ MODULE_DEVICE_TABLE(of, PWM_dt_ids);
 
 static int PWM_probe(struct platform_device *pltform_PWM)
 {
-	int minor;
-	int status;
+	int minor = 0;
+	int status = -1;
 	struct resource res;
-	int rc;
+	int rc = 0;
 
 	struct PWM_data *PWM;
 
@@ -241,7 +312,7 @@ static int PWM_probe(struct platform_device *pltform_PWM)
 		struct device *dev;
 		
 		PWM->devt = MKDEV(PWM_major, minor);
-		dev = device_create_with_groups(PWM_class, NULL, PWM->devt, NULL, NULL, CLASS_NAME "%d", minor);
+		dev = device_create_with_groups(PWM_class, NULL, PWM->devt, NULL, PWM_attr_groups, CLASS_NAME "%d", minor);
 		status = PTR_ERR_OR_ZERO(dev);
 	}
 	else
@@ -264,6 +335,8 @@ static int PWM_probe(struct platform_device *pltform_PWM)
 		PWM->base_register = res.start;
 		//Remap the memory region in to usable memory
 		PWM->pulsewidth_address =  of_iomap(pltform_PWM->dev.of_node, 0);
+		PWM->frequency_address = PWM->pulsewidth_address + 1;
+		PWM->pins_address = PWM->pulsewidth_address + 2;
 	}
 	mutex_unlock(&device_list_lock);
 	
@@ -284,7 +357,7 @@ static int PWM_remove(struct platform_device *pltform_PWM)
 {
 	struct PWM_data *PWM = platform_get_drvdata(pltform_PWM);
 	struct resource res;
-	int rc;
+	int rc = 0;
 
 	rc = of_address_to_resource(pltform_PWM->dev.of_node, 0, &res);
 
@@ -333,7 +406,7 @@ static int PWM_init(void)
 	//If the number is smaller than 0, it's an error. So jump to the error state.
 	if(PWM_major < 0)
 	{
-		printk(KERN_WARNING "hello: can't get major %d\n", PWM_major);
+		printk(KERN_WARNING "PWM: can't get major %d\n", PWM_major);
 		retval = PWM_major;
 		goto failed_chrdevreg;
 	}
@@ -378,3 +451,6 @@ static void PWM_exit(void)
 
 module_init(PWM_init);
 module_exit(PWM_exit);
+
+MODULE_LICENSE("Dual BSD/GPL");
+MODULE_AUTHOR("Bas Janssen");

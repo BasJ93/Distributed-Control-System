@@ -19,5 +19,5 @@ default:
 install:
 	$(MAKE) -C $(KERNELDIR) M=$(BUILD) src=$(PWD) modules
 	mv build/PID.ko Debug/PID.ko
-	scp Debug/PID.ko root@zynq:/media/card
+	scp Debug/PID.ko root@$(BOARD):/media/card
 endif

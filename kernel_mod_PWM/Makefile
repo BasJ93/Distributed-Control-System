@@ -19,5 +19,5 @@ default:
 install:
 	$(MAKE) -C $(KERNELDIR) M=$(BUILD) src=$(PWD) modules
 	mv build/PWM.ko Debug/PWM.ko
-	scp Debug/PID.ko root@$(BOARD):/media/card
+	scp Debug/PWM.ko root@$(BOARD):/media/card
 endif

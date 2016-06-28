@@ -1,6 +1,6 @@
 /****************************************************/
 /*													*/
-/*	Version 1.1		 								*/
+/*	Version 1.3		 								*/
 /*	Author: Bas Janssen								*/
 /*	Lectoraat Robotics and High Tech Mechatronics 	*/
 /*	2016				 							*/
@@ -25,86 +25,39 @@
 #include <asm/io.h>
 #include <asm/uaccess.h>
 
-MODULE_LICENSE("Dual BSD/GPL");
-MODULE_AUTHOR("Bas Janssen");
-
 #define CLASS_NAME "PID"
 #define DEVICE_NAME "PID"
 
-#define FPGA_SPACING 1
-
 #define N_PID_MINORS 32
 
-static struct class* PID_class = NULL;
+static struct class* PID_class = NULL;   // HKMS: netjes dat je "alles" static maakt! JNSN: Dank je.
 static int PID_major = 0;
 
 static DECLARE_BITMAP(minors, N_PID_MINORS);
 
 static LIST_HEAD(device_list);
+//This mutex is used to prevent creating or removing a device while a create or remove envent is being executed.
 static DEFINE_MUTEX(device_list_lock);
 
 //Make sure only one proccess can accessour the device
+// HKMS: je hebt 2 mutexen, leg hier even kort uit waar ze toe dienen
 static DEFINE_MUTEX(PID_device_mutex);
 
-static int memory_request = 0;
-
 //Custom struct to store the data we want in the driver
-struct PID_data {
-	unsigned int * setpoint_address;
-	unsigned int * position_address;
-	unsigned int * P_address;
-	unsigned int * I_address;
-	unsigned int * D_address;
-	unsigned int * state_address;
-	unsigned int * update_address;
-	unsigned int * emerg_address;
-	int 		   message_read;
-	unsigned int   base_register;
+struct PID_data{
+	uint32_t* setpoint_address;
+	uint32_t* position_address;
+	uint32_t* P_address;
+	uint32_t* I_address;
+	uint32_t* D_address;
+	uint32_t* state_address;
+	uint32_t* update_address;
+	uint32_t* emerg_address;
+	int 	  message_read;
+	uint32_t  base_register;
 	struct list_head device_entry;
 	dev_t		   devt;
 	};
-
-
-static int PID_itoa(int value, char *buffer)
-{
-	char data[11];
-	char temp_char;
-	int i = 0;
-	int j;
-	int tmp;
-	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	//As we dont have access to itoa(), we write it our selves. Convert the int to an array of chars, and flip it while trimming leading 0's.
-    tmp = value;
-    for(i = 0; i<11; i++)
-    {
-		temp_char = tmp % 10;
-        data[i] = '0' + temp_char;
-        tmp   = tmp/10;
-    }
-	for(i = 0; i<11; i++)
-	{
-		if(data[9-i] != '0')
-		{
-			for(j = 0; j<(11-i); j++)
-			{
-				int_array[j] = data[9-i-j];
-			}
-			if(j<11)
-			{
-				int_array[j-1] = '\n';
-				int_array[j] = '\0';
-			}
-			else
-			{
-				int_array[10] = '\n';
-				int_array[11] = '\0';
-			}
-			break;
-		}
-	}
-	strcpy(buffer, int_array);
-	return 0;
-}
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /*Device node handler functions and definition struct																*/
@@ -117,37 +70,39 @@ static int PID_itoa(int value, char *buffer)
 
 static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, loff_t* offset)
 {
-	struct PID_data *PID;
-	ssize_t retval;
+    // HKMS: ik mis het uitlezen van het minor nummer... die negeer je helemaal? Ik zou alsnog bewust 1 minor nummer gebruiken om toekomstige uitbreidingen niet in de weg te zitten
+	// JNSN: Ik heb werkelijk waar geen idee wat ik met het minor nummer zou moeten doen. Als ik het goed berijp uit de Spidev driver, bevat de file struct mijn struct die ik er in gestopt heb.
+	// JNSN: Uit deze struct kan ik mijn adressen halen.
+	struct PID_data* PID;
+	ssize_t retval = -1;
 	ssize_t copied = 0;
-	unsigned int fpga_value;
-	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	unsigned int fpga_value = 0;
+	char int_array[20];
 
 	//Grab the PID_data struct out of the file struct.
 	PID = filp->private_data;
 
 	//cat keeps requesting new data until it receives a "return 0", so we do a one shot.
 	if(PID->message_read)
+	{
 		return 0;
+	}
 	//Read from the I/O register
 	fpga_value = ioread32(PID->position_address);
-	
-	PID_itoa(fpga_value, int_array);	
 
-	//Check how long the char array is after we build it.
-	copied = sizeof(int_array);
+	copied = snprintf(int_array, 20, "%i", fpga_value);
 
 	retval = copy_to_user(buffer, &int_array, copied);
 	PID->message_read = 1;
-	if(retval)
-		return retval;
+
+// HKMS: gebruik altijd accolades, ook al heb je maar 1 regel! Zie bijvoorbeeld deze security bug waarom: https://www.imperialviolet.org/2014/02/22/applebug.html
 	return retval ? retval : copied;
 }
 
 static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t lenght, loff_t* offset)
 {
 	struct PID_data *PID;
-	ssize_t retval;
+	ssize_t retval = -1;
 	unsigned int converted_value;
 	ssize_t count = lenght;
 
@@ -156,21 +111,23 @@ static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t le
 
 	//Since the data we need is in userspace we need to copy it to kernel space so we can use it.
 	retval = kstrtouint_from_user(buffer, count, 0, &converted_value);
-	if(retval)
-		return retval;
+	converted_value = converted_value * 100000;
 	//Write to the I/O register
 	iowrite32(converted_value, PID->setpoint_address);
+
 	return retval ? retval : count;
 }
 
 static int PID_open(struct inode* inode, struct file* filp)
 {
-	int status;
+	int status = -1;
 	struct PID_data *PID;
+
 	mutex_lock(&device_list_lock);
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
-	list_for_each_entry(PID, &device_list, device_entry) {
+	list_for_each_entry(PID, &device_list, device_entry) {   // HKMS: ik snap niet helemaal waarom dit in een gelinkte lijst moet
+															 // JNSN: dit komt rechtstreeks uit de voorbeelden in LDD3 en de Spidev driver. Als je een beter voorstel hebt hoor ik dat graag.
 		//Check if the struct is the correct one.
 		if(PID->devt == inode->i_rdev) {
 			//Store the struct in the private_data member of the file struct so that it is usable in the read and write functions of the device node.
@@ -197,7 +154,6 @@ static int PID_release(struct inode* inode, struct file* filp)
 {
 	//Remove the mutex lock, so other processes can use the device.
 	mutex_unlock(&PID_device_mutex);
-//	printk(KERN_INFO "Unlocking mutex\n");
 	return 0;
 }
 
@@ -210,9 +166,9 @@ struct file_operations PID_fops = {
 };
 
 /*------------------------------------------------------------------------------------------------------*/
-/*Sysfs endpoint definitions and handler functions														*/
-/*																										*/
-/*																										*/
+/*Sysfs endpoint definitions and handler functions.														*/
+/*The sysfs nodes are used to transfer settings to the PID controller and read status information.		*/
+/*E.g. the values for the P, I and D factors for the settings, and Emergency stop for the status.		*/
 /*																										*/
 /*																										*/
 /*------------------------------------------------------------------------------------------------------*/
@@ -220,9 +176,9 @@ struct file_operations PID_fops = {
 static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, const char* buffer, size_t lenght)
 {
 	struct PID_data *PID;
- 	int retval;
-	unsigned int converted_value;
-	unsigned int * address;
+ 	int retval = -1;
+	unsigned int converted_value = 0;
+	unsigned int * address = 0;
 	int count = lenght;
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
@@ -230,63 +186,100 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 		//Check if the struct is the correct one.
 		if(PID->devt == dev->devt) {
 			//Grab the address for the node that is being called.
+		    // HKMS: ik zou een array maken van filenamen en adressen, loop door de namen om te kijken welke file
+		    // HKMS: benaderd wordt en neem dan het bijpassende adres over. Makkelijker configureren en voorkomt
+		    // HKMS: code explosie bij nog meer files
 			if(strcmp(attr->attr.name, "P") == 0)
+			{
 				address = PID->P_address;
+			}
 			else if(strcmp(attr->attr.name, "I") == 0)
+			{
 				address = PID->I_address;
+			}
 			else if(strcmp(attr->attr.name, "D") == 0)
+			{
 				address = PID->D_address;
+			}
 			else if(strcmp(attr->attr.name, "Update") == 0)
+			{
 				address = PID->update_address;
+			}
+			else
+			{
+				printk(KERN_WARNING "Invalid sysfs node\n");
+				return -ENXIO;
+			}
 		}
 	}
 
 	retval = kstrtoint(buffer, 0, &converted_value);
-	if(retval)
-		return retval;
+	converted_value = converted_value * 100000;
+	
 	iowrite32(converted_value, address);
+
 	return retval ? retval : count;
 }
 
 static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, char *buffer)
 {
 	struct PID_data *PID;
-	int retval;
-	int copied;
-	//char data[11];
-	//char temp_char;
-	//int i = 0;
-	//int j = 0;
-	char int_array[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	//int tmp;
-	unsigned int * address;
-	unsigned int fpga_value;
+	int retval = -1;
+	int copied = 0;
+	char int_array[20];
+	unsigned int* address = 0;
+	unsigned int fpga_value = 0;
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
 	list_for_each_entry(PID, &device_list, device_entry) {
 		//Check if the struct is the correct one.
+
+		char* filenames[] = {"P", "I"};
+		unsigned int* addresses[] = {PID->P_address, PID->I_address};
+		const size_t nr_files = sizeof(filenames) / sizeof(filenames[0]);
+		int i = 0;
+		for(; i < nr_files; i++)
+		{
+			if (strcmp(attr->attr.name, filenames[i]) == 0)
+			{
+				address = addresses[i];
+			}
+		}
+
 		if(PID->devt == dev->devt) {
 			//Grab the address for the node that is being called.
 			if(strcmp(attr->attr.name, "P") == 0)
+			{
 				address = PID->P_address;
+			}
 			else if(strcmp(attr->attr.name, "I") == 0)
+			{
 				address = PID->I_address;
+			}
 			else if(strcmp(attr->attr.name, "D") == 0)
+			{
 				address = PID->D_address;
+			}
 			else if(strcmp(attr->attr.name, "State") == 0)
+			{
 				address = PID->state_address;
+			}
 			else if(strcmp(attr->attr.name, "Emerg") == 0)
+			{
 				address = PID->emerg_address;
+			}
+			else
+			{
+				printk(KERN_WARNING "Invalid sysfs node\n");
+				return -ENXIO;
+			}
 		}
 	}
 	
-	fpga_value = ioread32(address);
-
-	PID_itoa(fpga_value, int_array);
-
-	//Check how long the char array is after we build it.
-	copied = sizeof(int_array);
-
+	fpga_value = ioread32(address) / 100000;
+	
+	copied = snprintf(int_array, 20, "%i", fpga_value);
+	
 	retval = copy_to_user(buffer, &int_array, copied);
 
 	return retval ? retval : copied;
@@ -329,6 +322,7 @@ static const struct attribute_group* PID_attr_groups[] = {
 
 static const struct of_device_id PID_dt_ids[] = {
 	{ .compatible = "fontys,PID"},
+	{ .compatible = "xlnx,PID-Struct-1.0"},
 	{},
 };
 
@@ -336,16 +330,18 @@ MODULE_DEVICE_TABLE(of, PID_dt_ids);
 
 static int PID_probe(struct platform_device *pltform_PID)
 {
-	int minor;
-	int status;
+	int minor = 0;
+	int status = -1;
 	struct resource res;
-	int rc;
+	int rc = 0;
 
 	struct PID_data *PID;
 
 	PID = kzalloc(sizeof(*PID), GFP_KERNEL);
 	if(!PID)
+	{
 		return -ENOMEM;
+	}
 	
 	INIT_LIST_HEAD(&PID->device_entry);
 
@@ -390,13 +386,17 @@ static int PID_probe(struct platform_device *pltform_PID)
 	mutex_unlock(&device_list_lock);
 	
 	if(status)
+	{
 		kfree(PID);
+	}
 	else
+	{
 		platform_set_drvdata(pltform_PID, PID);
+	}
 
 	return status;
 
-	failed_memregion:
+failed_memregion:
 		device_destroy(PID_class, PID->devt);
 		clear_bit(MINOR(PID->devt), minors);
 	return -ENODEV;
@@ -406,7 +406,7 @@ static int PID_remove(struct platform_device *pltform_PID)
 {
 	struct PID_data *PID = platform_get_drvdata(pltform_PID);
 	struct resource res;
-	int rc;
+	int rc = 0;
 
 	rc = of_address_to_resource(pltform_PID->dev.of_node, 0, &res);
 
@@ -422,7 +422,6 @@ static int PID_remove(struct platform_device *pltform_PID)
 	if(PID->base_register)
 	{
 		release_mem_region(res.start, resource_size(&res));
-		memory_request = 0;
 	}
 	//Free the kernel memory
 	kfree(PID);
@@ -455,7 +454,7 @@ static int PID_init(void)
 	//If the number is smaller than 0, it's an error. So jump to the error state.
 	if(PID_major < 0)
 	{
-		printk(KERN_WARNING "hello: can't get major %d\n", PID_major);
+		printk(KERN_WARNING "PID: can't get major %d\n", PID_major);
 		retval = PID_major;
 		goto failed_chrdevreg;
 	}
@@ -481,11 +480,11 @@ static int PID_init(void)
 
 	return 0;
 
-	failed_driverreg:
+failed_driverreg:
 		class_destroy(PID_class);
-	failed_classreg:
+failed_classreg:
 		unregister_chrdev(PID_major, DEVICE_NAME);
-	failed_chrdevreg:
+failed_chrdevreg:
 		return -1;
 }
 
@@ -500,3 +499,6 @@ static void PID_exit(void)
 
 module_init(PID_init);
 module_exit(PID_exit);
+
+MODULE_LICENSE("Dual BSD/GPL");
+MODULE_AUTHOR("Bas Janssen");

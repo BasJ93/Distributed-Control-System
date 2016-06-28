@@ -68,3 +68,44 @@
 09:03:16 INFO  : XSDB server has started successfully.
 09:04:07 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
 09:04:08 INFO  : XSDB server has started successfully.
+15:17:16 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+15:17:20 INFO  : XSDB server has started successfully.
+15:17:26 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:33:16 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:33:21 INFO  : XSDB server has started successfully.
+09:33:27 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:16:31 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:16:36 INFO  : XSDB server has started successfully.
+09:16:42 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+13:19:18 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+13:19:22 INFO  : XSDB server has started successfully.
+13:19:36 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:35:00 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:35:04 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:35:05 INFO  : XSDB server has started successfully.
+09:35:05 INFO  : XSDB server has started successfully.
+09:35:05 ERROR : (XSDB Server)called Tcl_FindHashEntry on deleted table
+
+09:35:05 ERROR : (XSDB Server)/opt/Xilinx/SDK/2015.4/bin/loader: line 164:  2350 Aborted                 "$RDI_PROG" "$@"
+
+09:35:05 ERROR : Failed to call init_repo
+java.io.IOException: Command [C 1 xsdb eval "::hsi::utils::init_repo"] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Communication channel is closed by remote peer
+	at org.eclipse.tcf.core.AbstractChannel$1$2.run(AbstractChannel.java:305)
+	... 2 more
+09:35:05 ERROR : Exception rasied in executing the command =Failed to call init_repo 
+10:03:00 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:03:05 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:03:08 INFO  : XSDB server has started successfully.
+10:03:09 INFO  : XSDB server has started successfully.
+10:34:05 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:34:06 INFO  : XSDB server has started successfully.
+10:34:07 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
