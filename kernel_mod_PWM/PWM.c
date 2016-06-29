@@ -200,7 +200,7 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 			else
 			{
 				printk(KERN_WARNING "Node does not exist\n");
-				return -EPERM;
+				return -ENXIO;
 			}
 		}
 	}
@@ -239,7 +239,7 @@ static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, 
 			else
 			{
 				printk(KERN_WARNING "Node does not exist\n");
-				return -EPERM;
+				return -ENXIO;
 			}
 		}
 	}

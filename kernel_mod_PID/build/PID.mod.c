@@ -44,7 +44,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xf4fa543b, __VMLINUX_SYMBOL_STR(arm_copy_to_user) },
 	{ 0xb81960ca, __VMLINUX_SYMBOL_STR(snprintf) },
 	{ 0x822137e2, __VMLINUX_SYMBOL_STR(arm_heavy_mb) },
-	{ 0xe187693c, __VMLINUX_SYMBOL_STR(kstrtouint_from_user) },
+	{ 0x87925ca6, __VMLINUX_SYMBOL_STR(kstrtoint_from_user) },
 	{ 0xefd6cf06, __VMLINUX_SYMBOL_STR(__aeabi_unwind_cpp_pr0) },
 	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
 	{ 0xcdccd0ba, __VMLINUX_SYMBOL_STR(mutex_trylock) },

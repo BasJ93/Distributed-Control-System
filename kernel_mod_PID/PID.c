@@ -72,7 +72,7 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 	struct PID_data* PID;
 	ssize_t retval = -1;
 	ssize_t copied = 0;
-	unsigned int fpga_value = 0;
+	int32_t fpga_value = 0;
 	char int_array[20];
 
 	PID = filp->private_data;
@@ -83,7 +83,7 @@ static ssize_t PID_read(struct file* filp, char __user *buffer, size_t lenght, l
 		return 0;
 	}
 	
-	fpga_value = ioread32(PID->position_address);
+	fpga_value = ioread32(PID->position_address) - 536870911;
 
 	copied = snprintf(int_array, 20, "%i", fpga_value);
 
@@ -98,14 +98,14 @@ static ssize_t PID_write(struct file* filp, const char __user *buffer, size_t le
 {
 	struct PID_data *PID;
 	ssize_t retval = -1;
-	unsigned int converted_value;
+	int32_t converted_value;
 	ssize_t count = lenght;
 
 	//Grab the PID_data struct out of the file struct.
 	PID = filp->private_data;
 
 	//Since the data we need is in userspace we need to copy it to kernel space so we can use it.
-	retval = kstrtouint_from_user(buffer, count, 0, &converted_value);
+	retval = kstrtoint_from_user(buffer, count, 0, &converted_value);
 	//Since the hardware PID controller devides the value by 100k, we must provide the value as value * 100k.
 	converted_value = converted_value * 100000;
 	//Write to the I/O register
@@ -172,8 +172,8 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 {
 	struct PID_data *PID;
  	int retval = -1;
-	unsigned int converted_value = 0;
-	unsigned int * address = 0;
+	int32_t converted_value = 0;
+	uint32_t * address = 0;
 	int count = lenght;
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
@@ -223,8 +223,8 @@ static ssize_t sys_read_node(struct device* dev, struct device_attribute* attr, 
 	int retval = -1;
 	int copied = 0;
 	char int_array[20];
-	unsigned int* address = 0;
-	unsigned int fpga_value = 0;
+	uint32_t* address = 0;
+	int32_t fpga_value = 0;
 
 	//Find the address of the struct using the device_list and the device_entry member of the PID_data struct.
 	list_for_each_entry(PID, &device_list, device_entry) {
