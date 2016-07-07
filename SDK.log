@@ -109,3 +109,25 @@ Caused by: java.io.IOException: Communication channel is closed by remote peer
 10:34:06 INFO  : XSDB server has started successfully.
 10:34:07 INFO  : Restoring global repository preferences: 
 		 /home/bas/device-tree-xlnx
+12:18:04 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+12:18:10 INFO  : XSDB server has started successfully.
+12:18:29 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+08:59:10 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+08:59:14 INFO  : XSDB server has started successfully.
+08:59:21 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+10:17:40 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:17:44 INFO  : XSDB server has started successfully.
+09:41:46 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:41:48 INFO  : XSDB server has started successfully.
+09:41:48 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+13:05:33 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+13:05:39 INFO  : XSDB server has started successfully.
+13:05:49 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+12:05:02 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+12:05:03 INFO  : XSDB server has started successfully.
+12:05:04 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx

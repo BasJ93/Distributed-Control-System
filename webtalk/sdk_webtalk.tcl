@@ -1,6 +1,6 @@
 webtalk_init -webtalk_dir /home/bas/workspace/webtalk
 webtalk_register_client -client project
-webtalk_add_data -client project -key date_generated -value "Tue May 3 12:05:48 2016" -context "software_version_and_target_device"
+webtalk_add_data -client project -key date_generated -value "Thu Jun 30 16:29:12 2016" -context "software_version_and_target_device"
 webtalk_add_data -client project -key product_version -value "SDK v2015.4" -context "software_version_and_target_device"
 webtalk_add_data -client project -key build_version -value "2015.4" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_platform -value "amd64" -context "software_version_and_target_device"
@@ -12,9 +12,9 @@ webtalk_add_data -client project -key target_family -value "NA" -context "softwa
 webtalk_add_data -client project -key target_device -value "NA" -context "software_version_and_target_device"
 webtalk_add_data -client project -key target_package -value "NA" -context "software_version_and_target_device"
 webtalk_add_data -client project -key target_speed -value "NA" -context "software_version_and_target_device"
-webtalk_add_data -client project -key random_id -value "rtkfif9tuj00f5cfs163smrb2j" -context "software_version_and_target_device"
-webtalk_add_data -client project -key project_id -value "2015.4_19" -context "software_version_and_target_device"
-webtalk_add_data -client project -key project_iteration -value "19" -context "software_version_and_target_device"
+webtalk_add_data -client project -key random_id -value "ppuodp6ulbi15pkk4ctiq4tfvm" -context "software_version_and_target_device"
+webtalk_add_data -client project -key project_id -value "2015.4_22" -context "software_version_and_target_device"
+webtalk_add_data -client project -key project_iteration -value "22" -context "software_version_and_target_device"
 webtalk_add_data -client project -key os_name -value "" -context "user_environment"
 webtalk_add_data -client project -key os_release -value "" -context "user_environment"
 webtalk_add_data -client project -key cpu_name -value "" -context "user_environment"
@@ -22,8 +22,8 @@ webtalk_add_data -client project -key cpu_speed -value "" -context "user_environ
 webtalk_add_data -client project -key total_processors -value "" -context "user_environment"
 webtalk_add_data -client project -key system_ram -value "" -context "user_environment"
 webtalk_register_client -client sdk
-webtalk_add_data -client sdk -key uid -value "1462263099000" -context "sdk\\\\application/1462263099000"
-webtalk_add_data -client sdk -key os -value "linux" -context "sdk\\\\application/1462263099000"
-webtalk_add_data -client sdk -key apptemplate -value "linux_empty_app" -context "sdk\\\\application/1462263099000"
-webtalk_transmit -clientid 1222127672 -regid "" -xml /home/bas/workspace/webtalk/usage_statistics_ext_sdk.xml -html /home/bas/workspace/webtalk/usage_statistics_ext_sdk.html -wdm /home/bas/workspace/webtalk/sdk_webtalk.wdm -intro "<H3>SDK Usage Report</H3><BR>"
+webtalk_add_data -client sdk -key uid -value "1467282079000" -context "sdk\\\\application/1467282079000"
+webtalk_add_data -client sdk -key os -value "linux" -context "sdk\\\\application/1467282079000"
+webtalk_add_data -client sdk -key apptemplate -value "linux_empty_app" -context "sdk\\\\application/1467282079000"
+webtalk_transmit -clientid 2370223946 -regid "" -xml /home/bas/workspace/webtalk/usage_statistics_ext_sdk.xml -html /home/bas/workspace/webtalk/usage_statistics_ext_sdk.html -wdm /home/bas/workspace/webtalk/sdk_webtalk.wdm -intro "<H3>SDK Usage Report</H3><BR>"
 webtalk_terminate
