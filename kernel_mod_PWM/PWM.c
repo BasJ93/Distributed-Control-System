@@ -189,13 +189,27 @@ static ssize_t sys_set_node(struct device* dev, struct device_attribute* attr, c
 			{
 				address = PWM->pins_address;
 				retval = kstrtoint(buffer, 0, &converted_value);
-				converted_value = ioread32(address)|converted_value;
+				if(converted_value)
+				{
+					converted_value = ioread32(address)|converted_value;
+				}
+				else
+				{
+					converted_value = ioread32(address)&0xFFFE;
+				}
 			}
 			else if(strcmp(attr->attr.name, "ENABLE") == 0)
 			{
 				address = PWM->pins_address;
-				retval = kstrtoint(buffer, 0, &converted_value) << 1;
-				converted_value = ioread32(address)|converted_value;
+				retval = kstrtoint(buffer, 0, &converted_value);
+				if(converted_value)
+				{
+					converted_value = ioread32(address)|(converted_value << 1);
+				}
+				else
+				{
+					converted_value = ioread32(address)&0xFFFD;
+				}
 			}
 			else
 			{
@@ -285,6 +299,7 @@ static const struct attribute_group* PWM_attr_groups[] = {
 static const struct of_device_id PWM_dt_ids[] = {
 	{ .compatible = "fontys,PWM"},
 	{ .compatible = "xlnx,IP-PWM-Struct-1.6"},
+	{ .compatible = "xlnx,IP-PWM-Struct-2.1"},
 	{},
 };
 

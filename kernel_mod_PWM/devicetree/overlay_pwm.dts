@@ -1,0 +1,39 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "xlnx,zynq-7000";
+
+	fragment@0 {
+		target = <&amba_pl>;
+		__overlay__ {
+			IP_PWM_Struct@43c00000 {
+			compatible = "fontys,PWM";
+			reg = <0x43c00000 0x10000>;
+			xlnx,s00-axi-addr-width = <0x4>;
+			xlnx,s00-axi-data-width = <0x20>;
+			};
+
+			IP_PWM_Struct@43c10000 {
+				compatible = "fontys,PWM";
+				reg = <0x43c10000 0x10000>;
+				xlnx,s00-axi-addr-width = <0x4>;
+				xlnx,s00-axi-data-width = <0x20>;
+			};
+
+			IP_PWM_Struct@43c20000 {
+				compatible = "fontys,PWM";
+				reg = <0x43c20000 0x10000>;
+				xlnx,s00-axi-addr-width = <0x4>;
+				xlnx,s00-axi-data-width = <0x20>;
+			};
+
+			IP_PWM_Struct@43c30000 {
+				compatible = "fontys,PWM";
+				reg = <0x43c30000 0x10000>;
+				xlnx,s00-axi-addr-width = <0x4>;
+				xlnx,s00-axi-data-width = <0x20>;
+			};
+		};
+	};
+};

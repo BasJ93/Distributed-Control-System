@@ -215,3 +215,14 @@ Reason: ERROR: [Common 17-39] 'hsi::open_sw_design' failed due to earlier errors
 14:01:25 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
 14:01:26 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
 14:01:33 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:40:49 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:40:51 INFO  : XSDB server has started successfully.
+09:40:51 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:40:51 INFO  : Restoring local repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:40:51 INFO  : Processing command line option -hwspec /home/bas/workspace/test_2/test_2.sdk/design_1_wrapper.hdf.
+09:40:51 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_0.
+09:40:59 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:41:48 INFO  : Invoking Bootgen: bootgen -image zynq_fsbl.bif -o /home/bas/workspace/test_2/test_2.sdk/zynq_fsbl/bootimage/BOOT.bin -w on
+09:41:48 INFO  : Bootgen command execution is done.

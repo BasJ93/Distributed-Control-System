@@ -1,0 +1,1 @@
+cmd_/home/bas/workspace/kernel_mod_hello/hello.ko := arm-xilinx-linux-gnueabi-ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/bas/workspace/kernel_mod_hello/hello.ko /home/bas/workspace/kernel_mod_hello/hello.o /home/bas/workspace/kernel_mod_hello/hello.mod.o

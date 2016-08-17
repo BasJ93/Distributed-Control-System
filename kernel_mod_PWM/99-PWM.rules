@@ -1,0 +1,5 @@
+SUBSYSTEM=="PWM", MODE="0660", GROUP="pwm", PROGRAM="/bin/sh -c '\
+	chown -R root:pwm /sys/class/PWM && chmod -R 770 /sys/class/pwm;\
+	chown -R root:pwm /sys/devices/virtual/PWM && chmod -R 770 /sys/devices/virtual/PWM;\
+	chown -R root:pwm /sys$devpath && chmod -R 770 /sys$devpath\
+'"

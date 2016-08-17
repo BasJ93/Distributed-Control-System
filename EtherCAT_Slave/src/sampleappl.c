@@ -29,6 +29,8 @@ V5.0: file created
 ------    Includes
 ------
 -----------------------------------------------------------------------------------------*/
+#include <stdio.h>
+
 #include "ecat_def.h"
 
 /* ECATCHANGE_START(V5.11) ECAT11*/
@@ -316,7 +318,9 @@ void APPL_Application(void)
 void main(void)
 {
     /* initialize the Hardware and the EtherCAT Slave Controller */
+	printf("Initializing hardware\n");
     HW_Init();
+    printf("Maininit\n");
     MainInit();
 
     bRunApplication = TRUE;

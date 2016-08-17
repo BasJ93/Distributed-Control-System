@@ -60,3 +60,4 @@ __attribute__((section(".modinfo"))) =
 
 MODULE_ALIAS("of:N*T*Cfontys,PWM*");
 MODULE_ALIAS("of:N*T*Cxlnx,IP-PWM-Struct-1.6*");
+MODULE_ALIAS("of:N*T*Cxlnx,IP-PWM-Struct-2.1*");

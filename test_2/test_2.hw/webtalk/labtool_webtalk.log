@@ -7,6 +7,6 @@
 source /home/bas/workspace/test_2/test_2.hw/webtalk/labtool_webtalk.tcl -notrace
 
     while executing
-"webtalk_transmit -clientid 2467823212 -regid "210759927_0_0_464" -xml /home/bas/workspace/test_2/test_2.hw/webtalk/usage_statistics_ext_labtool.xml -h..."
-    (file "/home/bas/workspace/test_2/test_2.hw/webtalk/labtool_webtalk.tcl" line 35)
-INFO: [Common 17-206] Exiting Webtalk at Fri Apr  8 09:58:54 2016...
+"webtalk_transmit -clientid 270553006 -regid "210759927_0_0_464" -xml /home/bas/workspace/test_2/test_2.hw/webtalk/usage_statistics_ext_labtool.xml -ht..."
+    (file "/home/bas/workspace/test_2/test_2.hw/webtalk/labtool_webtalk.tcl" line 28)
+INFO: [Common 17-206] Exiting Webtalk at Tue Jul 12 09:44:50 2016...
