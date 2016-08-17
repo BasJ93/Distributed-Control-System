@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+	[bootloader]/home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/Debug/fsbl_2.elf
+	/home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/bootimage/DCS_4.bit
+	/home/bas/workspace/DCS_V4/DCS_V4.sdk/u-boot.elf
+}

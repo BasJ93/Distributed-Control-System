@@ -1,0 +1,6 @@
+12:51:40 **** Auto Build of project device_tree_bsp_0 ****
+make -k all 
+dtc -I dts -O dtb -o devicetree.dtb system.dts
+
+12:51:40 Build Finished (took 67ms)
+

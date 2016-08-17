@@ -1,0 +1,180 @@
+15:09:53 INFO  : Launching XSDB server: xsdb.bat C:/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+15:10:00 INFO  : XSDB server has started successfully.
+15:10:08 INFO  : Restoring global repository preferences: 
+		 C:\Users\QTrooper\Downloads\device-tree-xlnx-master
+15:10:09 INFO  : Processing command line option -hwspec C:/Users/QTrooper/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+09:38:56 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:38:58 INFO  : XSDB server has started successfully.
+09:39:01 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:39:01 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+09:39:09 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+09:40:33 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:40:34 INFO  : XSDB server has started successfully.
+09:40:35 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:40:35 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+09:42:25 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/bootimage/BOOT.bin
+09:42:25 INFO  : Creating new bif file /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/bootimage/fsbl.bif
+09:42:25 INFO  : Bootgen command execution is done.
+09:51:58 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/bootimage/BOOT.bin -w on
+09:51:58 INFO  : Bootgen command execution is done.
+09:37:31 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+09:37:35 INFO  : XSDB server has started successfully.
+09:37:42 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+09:37:48 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+09:37:50 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_2.
+09:37:57 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+08:48:47 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+08:48:48 INFO  : XSDB server has started successfully.
+08:48:48 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+08:48:48 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+08:48:49 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_2.
+08:48:51 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1470654356000,  Project:1469538980000
+08:48:51 INFO  : The hardware specification for project 'design_1_wrapper_hw_platform_2' is different from /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+08:48:51 INFO  : Copied contents of /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_2/system.hdf.
+08:48:56 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+08:49:00 INFO  : 
+08:49:05 INFO  : 
+08:49:09 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+08:49:09 INFO  : Updating hardware inferred compiler options for fsbl.
+08:49:09 INFO  : Clearing existing target manager status.
+08:54:04 INFO  : Inferring section assignments and sizes from elf file: /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/Debug/fsbl.elf
+08:55:33 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/bootimage/BOOT.bin -w on
+08:55:33 INFO  : Bootgen command execution is done.
+10:52:39 ERROR : (XSDB Server)/opt/Xilinx/SDK/2015.4/bin/loader: line 164:  8584 Segmentation fault      "$RDI_PROG" "$@"
+
+10:52:40 ERROR : Failed to call GENERATE_APP 
+java.io.IOException: Command [C 164 xsdb eval "::hsi::utils::generate_app_template -hw /home/bas/work...] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Communication channel is closed by remote peer
+	at org.eclipse.tcf.core.AbstractChannel$1$2.run(AbstractChannel.java:305)
+	... 2 more
+10:52:40 ERROR : 
+java.lang.RuntimeException: Failed to call GENERATE_APP 
+	at com.xilinx.sdk.xsdb.XsdbCommandUtils.handleResult(XsdbCommandUtils.java:306)
+	at com.xilinx.sdk.xsdb.XsdbCommandUtils.executeAndRespond(XsdbCommandUtils.java:256)
+	at com.xilinx.sdk.appwiz.internal.AppGen.generate(AppGen.java:555)
+	at com.xilinx.sdk.appwiz.core.StandaloneProjectHandler.createCoreApp(StandaloneProjectHandler.java:85)
+	at com.xilinx.sdk.appwiz.core.AppCreationHandler.createApplication(AppCreationHandler.java:123)
+	at com.xilinx.sdk.appwiz.core.AppCreationHandler$1.run(AppCreationHandler.java:62)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2345)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2327)
+	at com.xilinx.sdk.appwiz.core.AppCreationHandler.execute(AppCreationHandler.java:58)
+	at com.xilinx.sdk.appwiz.ApplicationWizard.createNewProject(ApplicationWizard.java:120)
+	at org.eclipse.cdt.ui.wizards.NewCProjectWizard.doRun(NewCProjectWizard.java:293)
+	at org.eclipse.cdt.ui.wizards.NewCProjectWizard$1$1$1.run(NewCProjectWizard.java:235)
+	at org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation.execute(WorkspaceModifyDelegatingOperation.java:69)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation$1.run(WorkspaceModifyOperation.java:106)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2345)
+	at org.eclipse.ui.actions.WorkspaceModifyOperation.run(WorkspaceModifyOperation.java:118)
+	at org.eclipse.jface.operation.ModalContext.runInCurrentThread(ModalContext.java:464)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:372)
+	at org.eclipse.jface.wizard.WizardDialog.run(WizardDialog.java:1028)
+	at org.eclipse.cdt.ui.wizards.NewCProjectWizard$1$1.run(NewCProjectWizard.java:245)
+	at org.eclipse.ui.internal.UILockListener.doPendingWork(UILockListener.java:164)
+	at org.eclipse.ui.internal.UISynchronizer$3.run(UISynchronizer.java:158)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:135)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3717)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3366)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.block(ModalContext.java:173)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:388)
+	at org.eclipse.jface.wizard.WizardDialog.run(WizardDialog.java:1028)
+	at org.eclipse.cdt.ui.wizards.NewCProjectWizard.invokeRunnable(NewCProjectWizard.java:272)
+	at org.eclipse.cdt.ui.wizards.NewCProjectWizard.performFinish(NewCProjectWizard.java:162)
+	at org.eclipse.jface.wizard.WizardDialog.finishPressed(WizardDialog.java:827)
+	at org.eclipse.jface.wizard.WizardDialog.buttonPressed(WizardDialog.java:432)
+	at org.eclipse.jface.dialogs.Dialog$2.widgetSelected(Dialog.java:628)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:248)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1392)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3742)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3363)
+	at org.eclipse.jface.window.Window.runEventLoop(Window.java:826)
+	at org.eclipse.jface.window.Window.open(Window.java:802)
+	at org.eclipse.ui.internal.actions.NewWizardShortcutAction.run(NewWizardShortcutAction.java:135)
+	at org.eclipse.jface.action.Action.runWithEvent(Action.java:499)
+	at org.eclipse.jface.action.ActionContributionItem.handleWidgetSelection(ActionContributionItem.java:584)
+	at org.eclipse.jface.action.ActionContributionItem.access$2(ActionContributionItem.java:501)
+	at org.eclipse.jface.action.ActionContributionItem$5.handleEvent(ActionContributionItem.java:411)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1392)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:3742)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3363)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:1113)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:997)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:140)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:611)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:567)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:124)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:354)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:181)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:636)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:591)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1450)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1426)
+Caused by: java.io.IOException: Command [C 164 xsdb eval "::hsi::utils::generate_app_template -hw /home/bas/work...] aborted
+	at org.eclipse.tcf.core.AbstractChannel$9.run(AbstractChannel.java:753)
+	at org.eclipse.tcf.EventQueue.run(EventQueue.java:95)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.io.IOException: Communication channel is closed by remote peer
+	at org.eclipse.tcf.core.AbstractChannel$1$2.run(AbstractChannel.java:305)
+	... 2 more
+10:52:40 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:55:40 ERROR : Timed out. 180 seconds have elapsed while waiting for XSDB server to launch.
+10:55:41 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:20:24 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+10:20:25 INFO  : XSDB server has started successfully.
+10:20:25 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+10:20:26 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+10:20:27 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_2.
+10:20:35 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+11:11:38 INFO  : Launching XSDB server: xsdb -n /opt/Xilinx/SDK/2015.4/scripts/xsdb/xsdb/xsdb-server.tcl
+11:11:40 INFO  : XSDB server has started successfully.
+11:11:40 INFO  : Restoring global repository preferences: 
+		 /home/bas/device-tree-xlnx
+11:11:40 INFO  : Processing command line option -hwspec /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf.
+11:11:40 INFO  : Checking for hwspec changes in the project design_1_wrapper_hw_platform_2.
+11:11:46 INFO  : BSP Project P/device_tree_bsp_0 has been successfully migrated.
+11:14:10 INFO  : Invoking Bootgen: bootgen -image fsbl_2.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/bootimage/BOOT.bin
+11:14:10 INFO  : Creating new bif file /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/bootimage/fsbl_2.bif
+11:14:11 INFO  : Bootgen command execution is done.
+12:16:29 INFO  : Invoking Bootgen: bootgen -image fsbl_2.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/bootimage/BOOT.bin -w on
+12:16:29 INFO  : Overwriting existing bif file /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl_2/bootimage/fsbl_2.bif
+12:16:30 INFO  : Bootgen command execution is done.
+12:49:39 INFO  : SDK has detected change in the last modified timestamps for source hardware specification file Source:1471430947000,  Project:1470654356000
+12:49:39 INFO  : Project design_1_wrapper_hw_platform_2's source hardware specification located at /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf is now different from the local copy.
+		 The local copy will be replaced with the source specification and your workspace will be updated.
+12:49:53 INFO  : Copied contents of /home/bas/workspace/DCS_V4/DCS_V4.sdk/design_1_wrapper.hdf into /design_1_wrapper_hw_platform_2/system.hdf.
+12:49:58 INFO  : Synchronizing projects in the workspace with the hardware platform specification changes.
+12:50:03 INFO  : 
+12:50:04 INFO  : 
+12:50:05 INFO  : 
+12:50:06 INFO  : Updating hardware inferred compiler options for fsbl_2.
+12:50:07 INFO  : Updating hardware inferred compiler options for fsbl.
+12:50:07 INFO  : Clearing existing target manager status.
+12:50:13 INFO  : Closing and re-opening the MSS file of ther project fsbl_2_bsp
+12:50:20 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+12:50:20 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+12:50:21 INFO  : Closing and re-opening the MSS file of ther project device_tree_bsp_0
+12:50:21 INFO  : Workspace synchronized with the new hardware specification file. Cleaning dependent projects...
+12:50:22 WARN  : Linker script will not be updated automatically. Users need to update it manually.
+12:58:38 INFO  : Invoking Bootgen: bootgen -image fsbl.bif -o /home/bas/workspace/DCS_V4/DCS_V4.sdk/fsbl/bootimage/BOOT.bin -w on
+12:58:38 INFO  : Bootgen command execution is done.
+14:30:03 ERROR : Unexpected error while parsing XMD response ￿: com.google.gson.JsonSyntaxException: com.google.gson.stream.MalformedJsonException: invalid number or unquoted string near 

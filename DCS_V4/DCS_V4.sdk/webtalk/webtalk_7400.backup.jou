@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2015.4 (64-bit)
+# SW Build 1412921 on Wed Nov 18 09:43:45 MST 2015
+# 
+# Start of session at: Fri Jun 03 15:34:28 2016
+# Process ID: 7400
+# Current directory: C:/Users/QTrooper/DCS_V4/DCS_V4.sdk/webtalk
+# Command line: wbtcv.exe -mode batch -source sdk_webtalk.tcl
+# Log file: C:/Users/QTrooper/DCS_V4/DCS_V4.sdk/webtalk/webtalk.log
+# Journal file: C:/Users/QTrooper/DCS_V4/DCS_V4.sdk/webtalk\webtalk.jou
+#-----------------------------------------------------------
+source sdk_webtalk.tcl
